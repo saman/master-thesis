@@ -1,0 +1,29 @@
+In recent years, the popularity of portable devices had enormous growth.
+These devices can be laptops, tablets, smartphones, and even smartwatches.
+They have different operating systems and run various applications. Furthermore, due to the increased computing power of mobile devices, many vendors of desktop applications are providing mobile and tablet versions of their applications (e.g., Adobe Photoshop) \cite{cross-platform-appropriate-approach}.
+With these applications, people can perform various tasks, and they may use different devices to accomplish them.
+So, their lives become a multi-device experience.
+The analysis in~\cite{device-market-share} shows the market share of desktop, mobile, and tablet devices.
+The usage of desktop devices decreased by 56.75 percent from January 2009 to April 2020. 
+However, the usage of mobile devices increased by 53.94 percent in the same period.
+
+
+Users have to decide on which device they want to perform a certain task (e.g., sending an email on mobile).
+The same task can be performed on a wider range of devices (e.g., sending the same email on a Windows laptop).
+Switching the interaction between devices is a routine behavior from a user.
+This switch to another device can happen because of other devices are more comfortable in a specific situation (e.g., more desirable user experience or user interface, a large screen, or even better sound quality on another device).
+Another reason can be when the switch is forced because the battery is drained or because another device offers a better specific functionality or even the need to have private data in a device that is not shared~\cite{migratory-interactive}.
+
+
+Currently, users are doing this migration mostly manually.
+For example, Firefox and Chrome serve the same purpose considering both are web browsers. % For example, Firefox and Chrome are same-purpose applications since both are web browsers.
+Consider a user who wants to read an article on a website. If she only uses Chrome on all her devices, she could switch between devices with the tab synchronization feature of Chrome. However, if she wants to continue reading the article by switching from desktop PC with Chrome to an Android device which only has Firefox, she has to bring Chrome's current state to Firefox manually (e.g., set the address of the article, and find the exact page or scroll position). All of these steps are done manually because applications are from different vendors, and they do not support tab synchronization between each other.
+Users who want to switch between devices in the middle of their work do not like it if they have to start their tasks again; instead, they appreciate continuing a task seamlessly and effortlessly with their past data on the other device \cite{liquid-software, diary-study}.
+
+At the moment, some solutions are designed for a specific platform, ecosystem, or applications.
+For instance, Apple Handoff \footnote{\href{https://support.apple.com/en-us/HT209455}{Apple - Use Handoff to continue a task on your other devices}} only works on Apple devices like MacBook (macOS), iPhone (iOS) and, iPad (iPadOS).
+Also, there are research approaches for enabling state migration for web applications.
+Their focus is on the ability of run-time state migration by state persistence of JavaScript for the same application and only works on web applications  \cite{javascript-migration}.
+Various existing applications support run-time state migration.
+For instance, users can continue streaming media on applications like YouTube, Netflix, or Spotify on their devices (e.g., from mobile to desktop), but it is designed only for that particular application on different platforms.
+Currently, no solution supports run-time state migration for same-purpose applications of different vendors on all ecosystems, devices, or platforms.

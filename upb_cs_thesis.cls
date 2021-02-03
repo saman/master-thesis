@@ -13,7 +13,8 @@
 \DeclareOption{german}{\germantrue}
 
 \ProcessOptions
-\LoadClass[a4paper, 11pt, twoside, openright]{book}
+% \LoadClass[a4paper, 11pt, twoside, openright]{book}
+\LoadClass[a4paper, 11pt, openright]{report}
 \ifgerman
 	\RequirePackage[ngerman]{babel}
 \else
@@ -31,7 +32,8 @@
 \RequirePackage[explicit]{titlesec}
 
 \reversemarginpar
-\geometry{a4paper, twoside, left=30mm, right=20mm, top=30mm, bottom=30mm}
+% \geometry{a4paper, twoside, left=30mm, right=20mm, top=30mm, bottom=30mm}
+\geometry{a4paper, left=30mm, right=20mm, top=30mm, bottom=30mm}
 
 \pagestyle{empty}
 \pagenumbering{roman}
@@ -68,18 +70,18 @@
 \newcommand{\submissiondate}[1]{\renewcommand{\thesubmissiondate}{#1}}
 
 
-\newenvironment{abstract}{
-	\begin{center}
-		\begin{minipage}{.9\textwidth}
-			\ifgerman
-				\textbf{Zusammenfassung.} \hspace*{0.10pt}
-			\else
-				\textbf{Abstract.} \hspace*{0.10pt}
-			\fi
-}{
-		\end{minipage}
-	\end{center}
-}
+% \newenvironment{abstract}{
+% 	\begin{center}
+% 		\begin{minipage}{.9\textwidth}
+% 			\ifgerman
+% 				\textbf{Zusammenfassung.} \hspace*{0.10pt}
+% 			\else
+% 				\textbf{Abstract.} \hspace*{0.10pt}
+% 			\fi
+% }{
+% 		\end{minipage}
+% 	\end{center}
+% }
 
 
 \let\@upbtocold=\tableofcontents
