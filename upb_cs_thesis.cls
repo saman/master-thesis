@@ -70,18 +70,30 @@
 \newcommand{\submissiondate}[1]{\renewcommand{\thesubmissiondate}{#1}}
 
 
-% \newenvironment{abstract}{
-% 	\begin{center}
-% 		\begin{minipage}{.9\textwidth}
-% 			\ifgerman
-% 				\textbf{Zusammenfassung.} \hspace*{0.10pt}
-% 			\else
-% 				\textbf{Abstract.} \hspace*{0.10pt}
-% 			\fi
-% }{
-% 		\end{minipage}
-% 	\end{center}
-% }
+\renewenvironment{abstract}{
+	\begin{center}
+		\begin{minipage}{.9\textwidth}
+			\ifgerman
+				\textbf{Zusammenfassung.} \hspace*{0.10pt}
+			\else
+				\textbf{Abstract.} \hspace*{0.10pt}
+			\fi
+}{
+		\end{minipage}
+	\end{center}
+}
+
+\newenvironment{dedication}
+  {\clearpage           % we want a new page
+   \thispagestyle{empty}% no header and footer
+   \vspace*{\stretch{1}}% some space at the top 
+   \itshape             % the text is in italics
+   \raggedleft          % flush to the right margin
+  }
+  {\par % end the paragraph
+   \vspace{\stretch{3}} % space at bottom is three times that at the top
+   \clearpage           % finish off the page
+  }
 
 
 \let\@upbtocold=\tableofcontents
@@ -173,3 +185,4 @@
 
 \titlespacing*{\chapter}{0pt}{30pt}{25pt} 
 
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
