@@ -1,8 +1,16 @@
+\chapter{Towards Model-based Run-time State Migration}
+\label{ch:requirements}
+
+\section{Requirements Analysis}
+
 A requirement analysis shall be applied to identify what needs to be part of the modeling language and what it should offer.
 
 it's not supporting transition because we don't need to.
 
-\subsection{States of E-mail Applications}
+
+
+\subsection{Same-purpose Applications Analysis}
+\subsubsection{States of E-mail Applications}
 \begin{table}[ht!]
 \begin{tabular}{lll}
 State / E-mail client                   & Mailspring & K-9 Mail \\
@@ -37,7 +45,7 @@ Marking Star/Spam/Read/Unread an E-mail & \checkmark          & \checkmark
 \end{table}
 
 \newpage
-\subsection{States of Browsers}
+\subsubsection{States of Browsers}
 
 Chrome Page lifecycle API
 https://developers.google.com/web/updates/2018/07/page-lifecycle-api
@@ -73,7 +81,7 @@ Light mode                                            &                 & \check
 \end{table}
 
 
-\subsection{States of Video Player Applications}
+\subsubsection{States of Video Player Applications}
 For migration of video players, we needed to access to video file, considering the run-time migration of video players is not a good choice.
 
 \begin{table}[ht!]
@@ -101,7 +109,7 @@ Loading   local network devices                                    &            
 \end{table}
 
 \newpage
-\subsection{States of Note Taking Applications}
+\subsubsection{States of Note Taking Applications}
 
 \begin{table}[ht!]
 \begin{tabular}{lll}
@@ -131,7 +139,7 @@ Removing                                                                 & \chec
 \end{table}
 
 \newpage
-\subsection{Modeling States of E-mail Applications}
+\subsubsection{Modeling States of E-mail Applications}
 
 \begin{table}[ht!]
 \begin{tabular}{lll}
@@ -207,3 +215,14 @@ query & String & “master thesis”
 \label{tab:search-k9}
 \end{table}
 
+\section{Solution Overview}
+a model-driven approach, as outlined in Figure \ref{fig:solution}, shall be developed. 
+
+\begin{figure}[!b]
+    \includepdf[width=\linewidth, offset= 0 -100]{../figures/solution.pdf}
+    % \vspace{10cm}
+    \caption{Showing the approach of run-time state migration between two applications }
+    \label{fig:solution}
+\end{figure}
+
+\newpage

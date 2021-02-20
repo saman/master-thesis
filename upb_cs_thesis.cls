@@ -121,37 +121,32 @@
 	\normalfont\huge\bfseries
 }{}{0em}{
 	\newcommand*{\@upbprintscaledchapternumber}{
-		\resizebox{!}{15mm}{\thechapter}
+		\resizebox{!}{12mm}{\thechapter}
 	}
 	\settowidth{\@upbchapternumberwidth}{
 		\@upbprintscaledchapternumber
 	}
 	\setlength{\@upbtitlemaxwidth}{
-		.9\textwidth - \@upbchapternumberwidth 
+		1\textwidth - \@upbchapternumberwidth 
 	}
 	\settowidth{\@upbtitletextwidth}{#1}
-	\flushright
 	\rlap{
 		\parbox[b]{\textwidth + 23mm}{
-			\parbox[b]{\@upbtitlemaxwidth}{
-				\ifdim\@upbtitletextwidth<\@upbtitlemaxwidth%
-					\hfill #1
-				\else
-					#1\hbadness=10000
-				\fi
-			}
-			\hspace{12mm}
+			\hspace{130mm}
 			\makebox[\@upbchapternumberwidth][b]{
 				\raisebox{12mm}{\@upbprintscaledchapternumber}
 			}
 			\hspace{-\@upbchapternumberwidth}
-			\hspace{-12mm}
+			\hspace{-15mm}
 			\begin{tikzpicture}
 				\fill[black] (0mm, 0mm) rectangle
-						(\@upbchapternumberwidth +23mm, 10mm);
+						(\@upbchapternumberwidth +40mm, 10mm);
 			\end{tikzpicture}
-		}
+	    }
 	}
+	\vspace{10mm}
+	\newline
+    \hfill #1
 }
 
 \titleformat{name=\chapter,numberless}{
@@ -186,3 +181,4 @@
 \titlespacing*{\chapter}{0pt}{30pt}{25pt} 
 
 \def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
+

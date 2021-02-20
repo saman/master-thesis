@@ -1,0 +1,80 @@
+After research and looking for suitable existing state modeling languages, it has been decided to create a new DSL based on run-time state migration requirements. A Domain-specific language (DSL) can be developed from scratch, or it can be a modification or a restricted form of an existing modeling language.
+
+The Application State Modeling Language (ASML) is a DSL that defines each state of any software application. The focus of this language is on modeling states of the run-time.
+
+An application can have multiple states. This language allows developers to write a custom model. Each model covers an individual state. 
+
+As mentioned in requirements (Chapter \ref{ch:requirements}), this language supports states that are migratable. It is not supporting the transition between states as we assume we know in which state application is.
+
+The advantage of having an individual model for each state is improving interoperability, allowing different domain applications to share a specific part of them. For example, an email domain application has a calendar that can migrate data with a phone calendar application.
+
+
+\subsection{Language Stack}
+There are so many ways to define a DSL; it can be made from scratch (e.g., developing a language base on Xtext framework) or extended or restricted versions of other languages. The ASML is introduce a syntax based of JSON and is a restricted version of JSON Schema.
+
+\subsubsection{JSON}
+JSON (JavaScript Object Notation) is a file format. It is lightweight and human-readable text to store and transmit data based on the data types of the JavaScript programming language. In the last few years, many programming languages are supporting JSON, which gained popularity among developers, and has become the primary data format for exchanging information \cite{json-schema}. JSON documents consist of attribute-value pairs, which the value can be again a JSON document and there is not limit of the nesting level. A simple JSON documents is shown in Listing \ref{lis:json}.
+
+\lstset{
+  label=lis:json, caption=A simple JSON document., 
+  basicstyle=\ttfamily\footnotesize, frame=single, captionpos=b,
+  xleftmargin=.15\textwidth, xrightmargin=.15\textwidth
+}
+\begin{lstlisting}
+{
+    "fullname": "John Doe",
+    "email": "john@mail.upb.de"
+}
+\end{lstlisting}
+
+\subsubsection{JSON Schema}
+After the tremendous popularity of JSON, some scenarios could benefit from a declarative way of defining a schema for JSON documents. A declarative schema specification would give programming languages and also developers a standardized language to specify what types of JSON documents are valid as inputs and outputs \cite{json-schema}.
+
+The schema can be another JSON document which defines acceptable attribute-value pairs. For instance, the simple JSON document in Listing \ref{lis:json}, can be declare in JSON schema document in Listing \ref{lis:json-schema}
+
+\lstset{
+  label=lis:json-schema, caption=A simple JSON schema document., 
+  basicstyle=\ttfamily\footnotesize, frame=single, captionpos=b,
+  xleftmargin=.15\textwidth, xrightmargin=.15\textwidth
+}
+\begin{lstlisting}
+{
+    "properties": {
+        "fullname": {
+            "type": "string"
+        },
+        "email": {
+            "type": "string",
+            "format": "email"
+        }
+    }
+}
+\end{lstlisting}
+
+
+\subsection{Language Schema}
+description of the schema of the ASML.
+
+\begin{itemize}
+\item title
+\item description
+\item version
+\item properties
+\item required
+\item additionalProperties
+\item definitions
+\end{itemize}
+
+\subsection{Data Types}
+here are data type of the ASML.
+
+
+\begin{itemize}
+\item array
+\item boolean
+\item integer
+\item number
+\item object
+\item string
+\item null
+\end{itemize}

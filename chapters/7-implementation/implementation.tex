@@ -1,35 +1,7 @@
 \chapter{Implementation}
 \label{ch:implementation}
-
-
-\section{Technical and Architectural Aspects}
-\subsection{Publish–subscribe pattern}
-
 \section{Deriving The Interface}
-\subsection{ASML Command-line Interface (asml-cli)}
-https://www.npmjs.com/package/asml-cli
 
-\subsubsection{Installation}
-\begin{verbatim}
-npm install -g asml-cli
-\end{verbatim}
-\subsubsection{Usage}
-Parameters:
-\begin{itemize}
-\item -g Generate
-\item -v Validate
-\item -l Language
-\end{itemize}
-\begin{verbatim}
-asml -g/-v [folder/file path] -l [programming language]
-\end{verbatim}
-Example:
-\begin{verbatim}
-asml -g ./app/src/models -l java
-\end{verbatim}
-\subsubsection{Language Support}
-CLI support interface generating in these programming languages:
-Ruby, JavaScript, Flow, Rust, Kotlin, Dart, Python, C\#, Go, C++, Java, TypeScript, Swift, Objective-C, Elm
 \section{Middleware}
 \subsection{Server Specifications}
 \subsection{MQTT}
@@ -62,7 +34,7 @@ A simple Android app using rsm-android library to test the approach
 \include{chapters/5-implementation/transferring_run-time_state}
 
 \section{Helper Tools}
-\subsection{ASML Schmea Library}
+\subsection{ASML Schema Library}
 A repository which contains last est version of ASML JSON Schema files.
 
 https://www.npmjs.com/package/asml
@@ -80,3 +52,28 @@ https://www.npmjs.com/package/asml-validator
 \subsubsection{Installation}
 \subsubsection{API}
 \subsubsection{Usage}
+
+\subsection{ASML Command-line Interface}
+https://www.npmjs.com/package/asml-cli
+
+\subsubsection{Installation}
+\begin{verbatim}
+npm install -g asml-cli
+\end{verbatim}
+\subsubsection{Usage}
+Parameters:
+\begin{itemize}
+\item -g Generate
+\item -v Validate
+\item -l Language
+\end{itemize}
+\begin{verbatim}
+asml -g/-v [folder/file path] -l [programming language]
+\end{verbatim}
+Example:
+\begin{verbatim}
+asml -g ./app/src/models -l java
+\end{verbatim}
+\subsubsection{Language Support}
+CLI support interface generating in these programming languages:
+Ruby, JavaScript, Flow, Rust, Kotlin, Dart, Python, C\#, Go, C++, Java, TypeScript, Swift, Objective-C, Elm
