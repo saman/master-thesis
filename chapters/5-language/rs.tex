@@ -1,15 +1,53 @@
+The Run-time State is a JSON document which contains the actual attribute/values of a state. Run-time State is validated against Application State Model, if the state is valid, it can be migrated from source to target application.
+Target application should adjust itself with new state.
+
 \subsection{Example Run-time States}
 
-\subsubsection{E-mail Applications}
-\textbf{Search}
-\newline
-here
-\newline
-\textbf{Composing New E-mail}
-\newline
-there
+\subsubsection{Composing New E-mail}
+Based on composing new e-mail Application State Model (Listing \ref{lis:sending-email-schema}) valid example values for sending e-mail state is shown in Listing \ref{lis:sending-email-state}.
+
+\lstset{
+  label=lis:sending-email-state, caption=A Run-time State for sending e-mail as JSON document., 
+  basicstyle=\ttfamily\footnotesize, frame=single, captionpos=b,
+  xleftmargin=.15\textwidth, xrightmargin=.15\textwidth
+}
+\begin{lstlisting}
+{
+  "from": "engels@uni-paderborn.de",
+  "to": [
+    "saman@mail.upb.de",
+    "dennis.wolters@upb.de"
+  ],
+  "subject": "Master Thesis Grade",
+  "body": "Dear Saman\n, Your master thesis grade is 1.0."
+}
+\end{lstlisting}
 
 
-\subsubsection{Note Taking Applications}
-Writing Note Apps
+\subsubsection{Writing Note}
+Based on writing note Application State Model (Listing \ref{lis:note-schema}) valid example values for writing note state is shown in Listing \ref{lis:writing-note-state}.
  
+\lstset{
+  label=lis:writing-note-state, caption=A Run-time State for writing note as JSON document., 
+  basicstyle=\ttfamily\footnotesize, frame=single, captionpos=b,
+  xleftmargin=.15\textwidth, xrightmargin=.15\textwidth
+}
+\begin{lstlisting}
+{
+    "text": "example text"
+}
+\end{lstlisting}
+
+\subsubsection{Search}
+Based on search Application State Model (Listing \ref{lis:search-schema}) valid example values for search state is shown in Listing \ref{lis:search-state}.
+\lstset{
+  label=lis:search-state, caption=A Run-time State for search as JSON document., 
+  basicstyle=\ttfamily\footnotesize, frame=single, captionpos=b,
+  xleftmargin=.15\textwidth, xrightmargin=.15\textwidth
+}
+\begin{lstlisting}
+{
+    "query": "example text",
+    "submit": true
+}
+\end{lstlisting}
