@@ -4,48 +4,38 @@
 \label{appendix:compose-email-schema}
 \section{Composing E-mail Example Model}
 \lstset{
-  label=lis:sending-email-schema, caption=Composing E-mail model as JSON Schema document., 
+  label=lis:sending-email-schema, caption=Composing E-mail model as JSON Schema in YAML., 
   basicstyle=\ttfamily\footnotesize, frame=single, captionpos=b,
   xleftmargin=.01\textwidth, xrightmargin=.01\textwidth,
   breaklines=true
 }
-\begin{lstlisting}
-{
-     "asml": "1.0.0",
-     "info": {
-          "title": "sending-email",
-          "description": "A schema model for run-time state migration of sending an email",
-          "version": "1.0.0",
-          "contact": {
-              "name": "Saman Soltani",
-              "email": "saman@mail.upb.de",
-              "url": "samansoltani.com"
-          }
-     },
-     "properties": {
-          "from": {
-              "description": "The sender email",
-              "type": "string",
-              "format": "email"
-          },
-          "to": {
-              "description": "The reciever email",
-              "type": "array",
-              "items": {
-                    "type": "string",
-                    "format": "email"
-              }
-          },
-          "subject": {
-              "description": "The subject text of the email",
-              "type": "string"
-          },
-          "body": {
-              "description": "The body text of the email",
-              "type": "string"
-          }
-     }
-}
+\begin{lstlisting}[language=yaml]
+asml: 1.0.0
+info:
+  title: sending-email
+  description: A schema model for run-time state migration of sending an email
+  version: 1.0.0
+  contact:
+    name: Saman Soltani
+    email: saman@mail.upb.de
+    url: samansoltani.com
+properties:
+  from:
+    description: The sender email
+    type: string
+    format: email
+  to:
+    description: The reciever email
+    type: array
+    items:
+      type: string
+      format: email
+  subject:
+    description: The subject text of the email
+    type: string
+  body:
+    description: The body text of the email
+    type: string
 \end{lstlisting}
 
 

@@ -4,5 +4,19 @@
 in this chapter
 
 \section{Domain-specific Language}
+\subsubsection{JSON}
+JSON (JavaScript Object Notation) is a file format. It is lightweight and human-readable text to store and transmit data based on the data types of the JavaScript programming language. In the last few years, many programming languages support JSON, which gained popularity among developers, and has become the primary data format for exchanging information \cite{json-schema}. JSON documents consist of key-value pairs, in which the value can be again a JSON document. Objects are key-value pairs. Each key is a string and denotes a property of the object. The value can be of a primitive data type (number, string, boolean, and etc.), it can be an array of values or again an object and there is no limit of the nesting level. 
+
+A simple JSON documents is shown in Listing \ref{lis:json}.
+
+\lstset{
+  label=lis:json, caption=A simple JSON document., 
+}
+\begin{lstlisting}[language=json]
+{
+    "fullname": "John Doe",
+    "email": "john@mail.upb.de"
+}
+\end{lstlisting}
 \section{Model-driven Software Engineering}
 \section{Modeling Language}
