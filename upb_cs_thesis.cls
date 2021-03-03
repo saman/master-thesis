@@ -62,11 +62,13 @@
 \newcommand{\thedegree}{undefined}
 \newcommand{\theresearchgroup}{undefined}
 \newcommand{\thesupervisor}{undefined}
+\newcommand{\theadvisor}{undefined}
 \newcommand{\thesubmissiondate}{undefined}
 \newcommand{\thesistype}[1]{\renewcommand{\thethesistype}{#1}}
 \newcommand{\degree}[1]{\renewcommand{\thedegree}{#1}}
 \newcommand{\researchgroup}[1]{\renewcommand{\theresearchgroup}{#1}}
 \newcommand{\supervisor}[1]{\renewcommand{\thesupervisor}{#1}}
+\newcommand{\advisor}[1]{\renewcommand{\theadvisor}{#1}}
 \newcommand{\submissiondate}[1]{\renewcommand{\thesubmissiondate}{#1}}
 
 

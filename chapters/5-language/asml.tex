@@ -5,7 +5,7 @@ The Application State Modeling Language (ASML) is a DSL that defines any softwar
 The focus of this language is on modeling states of the run-time.
 
 An application can have multiple states and users can switch between them.
-These states and their transition can be a modeled in different ways (e.g UML state machine diagram), but as we deal with the data perspective and need to access to the actual values and migrate them, we need a DSL to define how these values should be specified. As the actual data of a state will be migrated, there is no need to include transition between states and each model is able to covers only an individual state. As mentioned in requirements (Chapter \ref{ch:requirements}), this language supports states that are migratable.
+These states and their transition can be a modeled in different ways (e.g, UML state machine diagram), but as we deal with the data perspective and have to access to the actual values and migrate them, we need a structured language for defining states (e.g, Amazon States Language). As the actual data of a state will be migrated, there is no need to include transition between states and each model is able to covers only an individual state. As mentioned in requirements (Chapter \ref{ch:requirements}), this language supports states that are migratable.
 It is not supporting the transition between states as we assume we know in which state application is. 
 
 The advantage of having an individual model for each state is improving interoperability, allowing different domain applications to share a specific part of them.
@@ -17,7 +17,9 @@ The model in ASML is called Application State Model, which is discussed in subch
 The actual value of the state is Run-Time State which is discussed in subchapter 5.3.
 \subsection{Metamodel}
 
-Figure \ref{fig:asml-meta-model} shows the metamodel of our DSL as an UML class diagram. A mapping document can describe one state. Each state  specified in the mapping document has a unique name. The extra information of a state are version and author that they can be defined in Number and String. Each state can have multiple attributes. Each attribute consist of a unique name and a specific content which its type can be a primitive types like Array, Object, Boolean, File, Number and String.
+Figure \ref{fig:asml-meta-model} shows the metamodel of our DSL as an UML class diagram. A mapping document can describe one state. Each state  specified in the mapping document has a unique name. The extra information of a state are version and author that they can be defined in Number and String. Each state can have multiple attributes. Each attribute consist of a unique name and a specific content which its type can be a primitive types like Array, Object, Boolean, File, Number and String. 
+
+\todo{change attribute to value}
 
 \begin{figure}
     \includegraphics[scale=1]{../figures/asml-class-diagram}
