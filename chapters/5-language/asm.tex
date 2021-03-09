@@ -13,7 +13,7 @@ After making a new model, developers can add it the repository manager by making
 There are some fields that they need to be in an Application State Model to define a state’s specification.
 
 \subsubsection{asml}
-A model must have an object field named “asml” whose string value represents the version of ASML. This version follows SemVer pattern \footnote{\href{https://semver.org/}{https://semver.org/
+As stated in requirement D3, a model must have an object field named “asml” whose string value represents the version of ASML. This version follows SemVer pattern \footnote{\href{https://semver.org/}{https://semver.org/
 }} and helps to validate the model against the correct version of our DSL. Listing \ref{lis:asm-asml} shows how the “asml” field has to be defined. The version of ASML in this Application State Model is “1.0.0”.
 
 \lstset{
@@ -23,7 +23,7 @@ A model must have an object field named “asml” whose string value represents
 asml: 1.0.0
 \end{lstlisting}
 \subsubsection{info}
-A model must have an object field named “info” whose object value represents the basic model’s information. This object must have objects fields “title” and “version” as common models are distinguished with their two string values. Other fields are “description” and “contact”, which are optional. The “description” is a string value that represents the descriptive text about the purpose of the model, and “contact” is the author’s information in case of further contacts. Listing \ref{lis:asm-info} shows an example of how the “info” field has to be defined.
+As stated in requirement D2, a model must have an object field named “info” whose object value represents the basic model’s information. This object must have objects fields “title” and “version” as common models are distinguished with their two string values. Other fields are “description” and “contact”, which are optional. The “description” is a string value that represents the descriptive text about the purpose of the model, and “contact” is the author’s information in case of further contacts. Listing \ref{lis:asm-info} shows an example of how the “info” field has to be defined.
 
 \lstset{
   label=lis:asm-info, caption=Application State Model “info” field example. 

@@ -1,25 +1,29 @@
-As it is mentioned DSL (Chapter \ref{ch:fundamentals}), After research and looking for suitable existing state modeling languages, it has been decided to create a new DSL based on run-time state migration requirements.
+As mentioned DSL (Chapter \ref{ch:fundamentals}), After research and looking for suitable existing state modeling languages, it has been decided to create a new DSL based on run-time state migration requirements.
 A DSL can be developed from scratch, or it can be a modification or a modified form of an existing domain-specific modeling language.
 
 The Application State Modeling Language (ASML) is a DSL that defines any software application state.
 The focus of this language is on modeling states of the run-time.
 
-An application can have multiple states and users can switch between them.
-These states and their transition can be a modeled in different ways (e.g, UML state machine diagram), but as we deal with the data perspective and have to access to the actual values and migrate them, we need a structured language for defining states (e.g, Amazon States Language). As the actual data of a state will be migrated, there is no need to include transition between states and each model is able to covers only an individual state. As mentioned in requirements (Chapter \ref{ch:requirements}), this language supports states that are migratable.
+An application can have multiple states, and users can switch between them.
+These states and their transition can be a modeled in different ways (e.g., UML state machine diagram), but as we deal with the data perspective and have to access to the actual values and migrate them, we need a structured language for defining states (e.g., Amazon States Language). As the state’s actual data will be migrated, there is no need to include the transition between states, and each model can cover only an individual state. As mentioned in requirements D1, this language supports states that are migratable.
 It is not supporting the transition between states as we assume we know in which state application is. 
 
 The advantage of having an individual model for each state is improving interoperability, allowing different domain applications to share a specific part of them.
-For example, an email domain application has a calendar that can migrate data with a phone calendar application.
+For example, an e-mail domain application has a calendar that can migrate data with a phone calendar application.
 Also, there is no need to model the states which are not migratable. So, it reduces the time of modeling state and the amount models. 
 
-The model in ASML is called Application State Model, which is discussed in subchapter 5.2.
+Figure \ref{fig:asml-overview} shows an overview of Application State Modeling Language (see \fcircone). The model in ASML is called Application State Model (see \fcirctwo), which is discussed in subchapter 5.2. The state’s actual value is Run-Time State (see \fcircthree), which is discussed in subchapter 5.3.
 
-The actual value of the state is Run-Time State which is discussed in subchapter 5.3.
+\begin{figure}
+    \includegraphics[scale=0.75]{../figures/asml-overview}
+    \centering
+    \caption{Overview of Application State Modeling Language}
+    \label{fig:asml-overview}
+\end{figure}
+Considering three states which are modeled as "New Event Model" (see \fcircfour), "Search Model" (see \fcircfive), and "Sending E-mail Model" (see \fcircsix). In this example, we have three applications. K-9 Mail is an e-mail client on an Android phone (see \fcircseven), Mailspring is another e-mail client which also has calendar management on macOS (see \fcirceight), and Woven Calendar is a calendar application (see \fcircnine). As Mailpsring and Waven have a mutual event state, they can share a common model: the “New Event Model”. However, Mailspring has two other common models with K9 Mail: the “Sending E-mail Model” and “Search Model”. So, Mailspring and Woven can migrate “An Event Data” (see \circone), a run-time state. Furthermore, Mailspring and K-9 can migrate “A E-mail Data” (see \circtwo) and “A Query Data” (see \circthree).
+
 \subsection{Metamodel}
-
-Figure \ref{fig:asml-meta-model} shows the metamodel of our DSL as an UML class diagram. A mapping document can describe one state. Each state  specified in the mapping document has a unique name. The extra information of a state are version and author that they can be defined in Number and String. Each state can have multiple attributes. Each attribute consist of a unique name and a specific content which its type can be a primitive types like Array, Object, Boolean, File, Number and String. 
-
-\todo{change attribute to value}
+Figure \ref{fig:asml-meta-model} shows the metamodel of our DSL as an UML class diagram. A mapping document can describe one state. Each state specified in the mapping document has a unique name. The extra information of a state is the version and author that can be defined in Number and String. Each state can have multiple values. Each value consists of a unique name and a specific content whose type can be a primitive type like Array, Object, Boolean, File, Number, and String. 
 
 \begin{figure}
     \includegraphics[scale=1]{../figures/asml-class-diagram}
@@ -29,7 +33,7 @@ Figure \ref{fig:asml-meta-model} shows the metamodel of our DSL as an UML class 
 \end{figure}
 
 \subsection{Language Stack}
-There are so many ways to define a DSL; it can be made from scratch (e.g., developing a language base on Xtext framework) or extended or restricted versions of other languages. The ASML is introducing a syntax based on JSON and is a extended version of JSON Schema. 
+There are so many ways to define a DSL; it can be made from scratch (e.g., developing a language base on Xtext framework) or extended or restricted versions of other languages. The ASML is introducing a syntax based on JSON and is an extended version of JSON Schema. 
 
 
 \subsubsection{JSON Schema}
@@ -58,7 +62,7 @@ For instance, the simple JSON document in Listing \ref{lis:json}, can be declare
 
 JSON Schema can define a document must have several properties, including regular data-types like objects, arrays, strings, booleans, numbers and, null. Each of these types has different keywords that help to specify and restrict the schema. The most important attribute is “type” whose value is defining the schema. Constraints can be applied on an instance by adding validation keywords to the schema \cite{json-model}. For example in Listing \ref{lis:json-schema}, \lstinline[basicstyle=\ttfamily]|{"type": "string"}| specify a value with string type.
 
-In this thesis, for readability reasons we use YAML syntax to represent the Application State Model in JSON Schema. YAML is a human-readable syntax and can be converted to JSON syntax without extra configuration. Listing \ref{lis:yaml-simple} shows a simple example based on Listing \ref{lis:json-schema} which is a JSON Schema document.
+We use YAML syntax to represent the Application State Model in JSON Schema in this thesis for readability reasons. YAML is a human-readable syntax and can be converted to JSON syntax without extra configuration. Listing \ref{lis:yaml-simple} shows a simple example based on Listing \ref{lis:json-schema} which is a JSON Schema document.
 
 \lstset{
   label=lis:yaml-simple, caption=Example of expressing JSON Schema in YAML syntax., 
@@ -80,7 +84,7 @@ The full schema of ASML is available on its GitHub repository
 \footnote{\href{https://github.com/asml-lang/asml/blob/master/schemas/schema.json}{https://github.com/asml-lang/}}.
 
 \subsubsection{Mapping Metamodel to JSON Schema}
-The metamodel of ASML (Fig. \ref{fig:asml-meta-model}) is mapped in JSON Schema. The mapping document can be considered as a JSON Schema document which is a model. Therefore, each state should be defined in one JSON Schema document. Attributes of a state are mapped to \lstinline[basicstyle=\ttfamily]{properties} element of JSON Schema, which each attribute should have a unique name as key and its data type can be defined as a key-value pair. The content of a attribute is mapped to a actual value in a JSON document, which they are objects. The extra information like version and author's contact are mapped to \lstinline[basicstyle=\ttfamily]{info} element.
+The metamodel of ASML (Fig. \ref{fig:asml-meta-model}) is mapped in JSON Schema. The mapping document can be considered as a JSON Schema document which is a model. Therefore, each state should be defined in one JSON Schema document. Values of a state are mapped to \lstinline[basicstyle=\ttfamily]{properties} element of JSON Schema, in which each value should have a unique name as a key, and its data type can be defined as a key-value pair. An value’s content is mapped to an actual value in a JSON document, which is objects. The extra information like version and author’s contact are mapped to \lstinline[basicstyle=\ttfamily]{info} element.
 
 
 \begin{table}

@@ -3,24 +3,40 @@
 
 \section{Requirements Analysis}
 
-A requirement analysis shall be applied to identify what needs to be part of the modeling language and what it should offer.
+A requirement analysis shall be applied to identify what approach has to offer. This includes what needs to be part of the modeling language and what has to be implemented. To solve it, as a prerequisite, we need to be able to model states, in general, to know which migratable states are involved in the application's scope. Also, we need to find at least two existing applications which are suitable to apply the approach.
 
-Applicable on existing apps
- Usage of platform-independent service technologies
-State and Device Management
-Device Discovery
+\subsection{R1 Applicable on Existing Applications}
+This approach shall allow adapting existing same-purpose applications, so they support run-time state migration.
 
-DSL req
-- Specification a state
-    - define a model
-- finding same model
-    - versioning
-    - same name
-- validating
+\subsection{R2 State Management}
+It shall be possible to model which and when parts of existing applications can be migrated. Also, it shall be possible to model these states.
+
+\subsection{R3 Device Management and Device Discovery}
+It must be possible to find, retrieve and select devices offering the same states. Also, It shall be possible to express if the application knows another application has the same state one same network.
+
+\section{Requirements for a DSL}
+
+\subsection{D1 Specification a State}
+The DSL shall be able to provide the specification of a state by defining a model. State whose are following these specifications can be migrated between applications explicitly or implicitly.
+\subsection{D2 Finding Same Model}
+The DSL must allow specifying a way for finding the same model. These specifications can be a unique model name and model version.
+\subsection{D3 Validating}    
+The DSL must have a version to allow validating the specification of a state.
 
 
-\subsection{Same-purpose Applications Analysis}
+
+\section{Same-purpose Applications Analysis}
+To show the approach's feasibility, two current existing open-source applications that are serving the same purpose shall be adapted to support run-time state migration.
+These applications shall be for different platforms, and their source code should be freely accessible to allow the integration of the approach.
+They shall be interactive applications for end-users and have sufficient complexity (e.g., applications should not have only one single state).
+
+In this section, some different pair of same-purpose applications got analyzed, and we found the commons state of them.
+
+\subsection{State Analysis of Applications}
 \subsubsection{States of E-mail Applications}
+
+Table \ref{tab:states_of_email_applications} shows a list of available states of two open-source e-mail clients. Some states can be candidates for migration, which are common in both applications.
+
 \begin{table}[ht!]
 \begin{tabular}{lll}
 State / E-mail client                   & Mailspring & K-9 Mail \\
@@ -57,14 +73,9 @@ Marking Star/Spam/Read/Unread an E-mail & \checkmark          & \checkmark
 \newpage
 \subsubsection{States of Browsers}
 
-Chrome Page lifecycle API
-https://developers.google.com/web/updates/2018/07/page-lifecycle-api
+Table \ref{tab:state_browsers} shows a list of available states of two browser applications. Some states can be candidates for migration, which are common in both applications. 
 
-W3C Page lifecycle API
-https://wicg.github.io/page-lifecycle/
-
-Mozilla Web API
-https://developer.mozilla.org/en-US/docs/Web/API
+Some states information are form official Chrome Page lifecycle API\footnote{\href{https://developers.google.com/web/updates/2018/07/page-lifecycle-api}{https://developers.google.com/web/updates/2018/07/page-lifecycle-api}} and Mozilla Web API\footnote{\href{https://developer.mozilla.org/en-US/docs/Web/API}{https://developer.mozilla.org/en-US/docs/Web/API}}. Also, For browsers there is a standard called W3C Page lifecycle API\footnote{\href{https://wicg.github.io/page-lifecycle/}{https://wicg.github.io/page-lifecycle/}}.
 
 
 \begin{table}[ht!]
@@ -92,7 +103,9 @@ Light mode                                            &                 & \check
 
 
 \subsubsection{States of Video Player Applications}
-For migration of video players, we needed to access to video file, considering the run-time migration of video players is not a good choice.
+Table \ref{tab:states_video_players} shows a list of available states of two video player applications. Some states can be candidates for migration, which are common in both applications. 
+
+To support run-time state migration on video players, we needed to access the video file, considering the video's size is not the right choice. However, run-time state migration can be supported on video streaming applications with the same media.
 
 \begin{table}[ht!]
 \begin{tabular}{lll}
@@ -120,6 +133,8 @@ Loading   local network devices                                    &            
 
 \newpage
 \subsubsection{States of Note Taking Applications}
+Table \ref{tab:states_note_apps} shows a list of available states of two note-taking applications. Some states can be candidates for migration, which are common in both applications. 
+
 
 \begin{table}[ht!]
 \begin{tabular}{lll}
@@ -148,7 +163,9 @@ Removing                                                                 & \chec
 \label{tab:states_note_apps}
 \end{table}
 
-\newpage
+\section{Modeling States}
+To check the feasibility of modeling the states, the source code of two applications is analyzed and modeled in tables. These applications are two open-source e-mail clients from two different platforms which they are \textbf{Mailspring} \footnote{\href{https://github.com/Foundry376/Mailspring}{https://github.com/Foundry376/Mailspring}} and \textbf{K-9 Mail} \footnote{\href{https://github.com/k9mail/k-9}{https://github.com/k9mail/k-9}}. 
+
 \subsubsection{Modeling States of E-mail Applications}
 
 \begin{table}[ht!]
@@ -184,19 +201,19 @@ object    & String    & “draft”
 \end{table}
 
 
-\newpage
+% \newpage
 \begin{table}[ht!]
 \begin{tabular}{lll}
 Field     & Type      & Example/Description \\
 \hline
-\_ID            &  &  \\
-SEND\_DATE      &      &                     \\
-SENDER         &      &                     \\
-SUBJECT        &      &                     \\
-PREVIEW        &      &                     \\
-ACCOUNT        &      &                     \\
-DELETE\_URI     &      &                     \\
-SENDER\_ADDRESS &      &                    
+\_ID            & String &  \\
+SEND\_DATE      & String     &                     \\
+SENDER         &  String    &                     \\
+SUBJECT        &  String    &                     \\
+PREVIEW        &  String    &                     \\
+ACCOUNT        &   String   &                     \\
+DELETE\_URI     &  String    &                     \\
+SENDER\_ADDRESS &   String   &                    
 \end{tabular}
 \caption{Modeling the State: Compose a new Email in K-9 Mail}
 \label{tab:compose_new_email_k9}
@@ -225,14 +242,4 @@ query & String & “master thesis”
 \label{tab:search-k9}
 \end{table}
 
-\section{Solution Overview}
-a model-driven approach, as outlined in Figure \ref{fig:solution}, shall be developed. 
-
-\begin{figure}[!b]
-    \includepdf[width=\linewidth, offset= 0 -100]{../figures/solution.pdf}
-    % \vspace{10cm}
-    \caption{Showing the approach of run-time state migration between two applications }
-    \label{fig:solution}
-\end{figure}
-
-\newpage
+\input{chapters/4-requirements/solution}
