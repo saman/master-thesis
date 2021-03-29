@@ -1,19 +1,24 @@
 \chapter{Adaption of example applications}
 \label{ch:adaption}
+In this chapter, to show the feasibility of the approach, as part of the thesis, two open-source e-mail clients adapted to support run-time state migration based on the developed approach. These applications are for different platforms, and their source code are freely accessible to allow the integration of libraries. 
+Suggestions for e-mail clients to be adapted are K-9 Mail for Android and Mailspring for desktop operating systems. They are interactive applications for end-users and have sufficient complexity (e.g., applications does not have only one single state).
+K9-Mail Android application is developed in Java; therefore, it requires the Android library. Moreover, Mailspring is developed using Electron and Node.js for desktop operating systems, and it needs the JavaScript library.
 
-
-Adaption of Example Applications
+As a developer who wants to implement the enabling run-time state migration, we used the developed approach, middleware, libraries, and adapt these existing same-purpose applications. 
 
 \section{Application State Models}
+After analysing states of these applications and their source code (Table \ref{tab:states_of_email_applications}), we decided to model search and sending-email states. We developed two common Application State Models for these two applications. 
 \subsection{Search}
 \subsection{Sending E-mail}
 
 \section{Example Applications}
+
 \subsection{Mailspring}
 \subsubsection{Architecture}
 \subsection{K-9 Mail}
 \subsubsection{Architecture}
 
 \section{Adaptions}
+We shall add support of run-time state migration by integrating libraries into these applications.
 \subsection{Mailspring}
 \subsection{K-9 Mail}

@@ -6,27 +6,27 @@
 A requirement analysis shall be applied to identify what an approach for run-time state migration has to offer. This approach shall enable modeling run-time states, in general, to know which migratable run-time states are involved in the application's scope. Also, we need to find at least two existing applications which are suitable to apply this approach.
 
 \subsection{R1 Applicable on Existing Applications}
-This approach shall allow enabling run-time state migration on newly and existing same-purpose applications. Developers should be able to use this approach on applications, even if they are not part of applications' developers team. Thereby, it enables the support of a huge number of existing applications.
+This approach shall allow enabling run-time state migration on new and existing same-purpose applications. Developers should be able to use this approach on applications, even if they are not part of the applications' developers team. Thereby, it enables the support of a vast number of existing applications.
 
 
 \subsection{R2 Platform-independent State Specification}
 It shall be possible to model which and when parts of existing applications can be migrated. Also, it shall be possible to model these states in a platform-independent manner.
 
 \subsection{R3 Model Repository}
-Developers have to adapt the run-time state migration approach to existing applications. Thereby, they have to find an existing state specification or define their own. So, it shall be possible to have central place to store models which are state specifications that developers can search for common models or upload models which they defined.
+Developers have to adapt the run-time state migration approach to existing applications. Thereby, they have to find an existing state specification or define their own. So, it shall be possible to have a central place to store models that are state specifications which developers can search for common models or upload models they defined.
 
 \subsection{R4 Device Management}
-It must be possible to find, retrieve and select devices offering the same states and migrate them. Also, the device discovery shall be possible in a way that the approach can express if a application knows another application has the same state one the same network.
+It must be possible to find, retrieve and select devices offering the same states and migrate them. Also, the device discovery shall be possible in a way that the approach can express if an application knows another application has the same state on the same network.
 
 
 
 \section{Requirements for a DSL}
 Based on \textbf{R2 Platform-independent State Specification}, we chose to develop a DSL to model the run-time states by specifications. 
-We have identified the most common structure a state has and defined them as requirements for a DSL to specify a state as following.
+We have identified the most common structure a state has and defined them as requirements for a DSL to specify a state as follows.
 
 
 \subsection{D1 State Specification}
-The DSL shall be able to provide the specification of a state by defining a model. State whose are following these specifications can be migrated between applications explicitly or implicitly. Also, state specification shall provide a way to define what part of a run-time state is required and what part of is optional.
+The DSL shall be able to provide the specification of a state by defining a model. State whose are following these specifications can be migrated between applications explicitly or implicitly. Also, state specification shall provide a way to define what part of a run-time state is required and what part is optional.
 
 \subsection{D2 Finding Same Model}
 To find common models between applications, the DSL must allow specifying a way for finding the same model. These specifications can be a unique model name and model version.
@@ -37,16 +37,16 @@ In case of improving the DSL for long-time support, the DSL must have a version 
 
 
 \section{Same-purpose Applications Analysis}
-The following analysis is to determine what pairs of application states exist and what needs to be modelled.
+The following analysis is to determine what pairs of application states exist and what needs to be modeled.
 These applications are from different platforms, and they are interactive applications for end-users and have sufficient complexity (e.g., applications should not have only one single state).
 
 
 \subsection{State Analysis of Applications}
-In this section, we compared four pairs of applications (Table  to determine which states are common between applications. Also, the type of the states are categorised in three types which are run-time state (R), persistent state (P) and action (A). Furthermore, the Migratable column shows if the state can be a candidate for run-time state migration.
+In this section, we compared four pairs of applications to determine which states are common between applications. Also, the type of the states is categorized into three types which are run-time state (R), persistent state (P), and action (A). Furthermore, the Migratable column shows if the state can be a candidate for run-time state migration.
 
 \subsubsection{States of E-mail Applications}
 
-Table \ref{tab:states_of_email_applications} shows a list of available states of two open-source e-mail clients which are Mailspring on macOS and K-9 Mail on Android. Some state are migratable like "Single E-mail" and "Search View". The "Single E-mail" state contain a view of a single e-mail in reading mode. In "Search View" user can search and find an e-mail by typing in a query input box. The information of some states like "Compose a new E-email", "Forward an E-mail" and "Replay an E-mail" are almost similar and they can considered as one state for sending an e-mail.
+Table \ref{tab:states_of_email_applications} shows a list of available states of two open-source e-mail clients: Mailspring on macOS and K-9 Mail on Android. Some states are migratable like "Single E-mail" and "Search View". The "Single E-mail" state contains a view of a single e-mail in reading mode. In "Search View" the user can search and find an e-mail by typing in a query input box. The information of some states like "Compose a new E-email", "Forward an E-mail" and "Replay an E-mail" are almost similar, and they can be considered as one state for sending an e-mail.
 
 \begin{table}[ht!]
 \begin{tabular}{lll|ll}
@@ -85,7 +85,7 @@ Marking Star/Spam/Read/Unread an E-mail & \checkmark & \checkmark & A    &
 \newpage
 \subsubsection{States of Browsers}
 
-Table \ref{tab:state_browsers} shows a list of available states of two browser applications which are Firefox on macOS and Chrome on Android. The information the current tab can be find in "Current Tab" state. Also, searching is possible within "Finding" state. Information of "Developer Console" and "Private/Incognito Mode" states is whether they are opened as a window or not.
+Table \ref{tab:state_browsers} shows a list of available states of two browser applications: Firefox on macOS and Chrome on Android. The information in the current tab can be found in the "Current Tab" state. Also, searching is possible within the "Finding" state. Information of "Developer Console" and "Private/Incognito Mode" states is whether they are opened as a window or not.
 
 Some states information are form official Chrome Page lifecycle API\footnote{\href{https://developers.google.com/web/updates/2018/07/page-lifecycle-api}{https://developers.google.com/web/updates/2018/07/page-lifecycle-api}} and Mozilla Web API\footnote{\href{https://developer.mozilla.org/en-US/docs/Web/API}{https://developer.mozilla.org/en-US/docs/Web/API}}. Also, For browsers there is a standard called W3C Page lifecycle API\footnote{\href{https://wicg.github.io/page-lifecycle/}{https://wicg.github.io/page-lifecycle/}}.
 
@@ -115,7 +115,7 @@ Light mode                                            &                         
 
 
 \subsubsection{States of Video Player Applications}
-Table \ref{tab:states_video_players} shows a list of available states of two video player applications which are IINA on macOS  and VLC on Android. In these applications all migratable states' information are the status of playing a video and can be considered almost identical. These states are "Pause", "Playing Video" and "Streaming". 
+Table \ref{tab:states_video_players} shows a list of available states of two video player applications which are IINA on macOS and VLC on Android. In these applications, all migratable states' information is the status of playing a video and can be considered almost identical. These states are "Pause", "Playing Video" and "Streaming". 
 
 To support run-time state migration on video players, we needed to access the video file, considering the video's size is not the right choice. However, run-time state migration can be supported on video streaming applications with the same media.
 
@@ -146,7 +146,7 @@ Loading   local network devices                       &                         
 
 \newpage
 \subsubsection{States of Note Taking Applications}
-Table \ref{tab:states_note_apps} shows a list of available states of two note-taking applications which are Laverna on macOS  and Joplin on Android. Some states are migratable which are "Search" and "Writing Note". In "Search" user can search and find a note by typing in a query input box. In "Writing Note" user enter some text as the note's content.
+Table \ref{tab:states_note_apps} shows a list of available states of two note-taking applications: Laverna on macOS and Joplin on Android. Some states are migratable, which are "Search" and "Writing Note". In "Search" the user can search and find a note by typing in a query input box. In "Writing Note" the user enters some text as the note's content.
 
 \begin{table}[ht!]
 \begin{tabular}{lll|ll}
@@ -287,7 +287,7 @@ body    & String & The subject text of the email
 \end{table} \FloatBarrier
 
 
-Furthermore, in "Search View" state there is a common pair value which is "query". This state is modeled in Table \ref{tab:search-model}.
+Furthermore, in "Search View" state there is a common pair value: "query". This state is modeled in Table \ref{tab:search-model}.
 
 
 \FloatBarrier

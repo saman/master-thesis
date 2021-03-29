@@ -1,79 +1,228 @@
 \chapter{Implementation}
 \label{ch:implementation}
-\section{Deriving The Interface}
-
 \section{Middleware}
-\subsection{Server Specifications}
+As stated in architectural overview, a middleware shall be provided that devices can communicate with each other and exchange run-time states. In this architecture, we used MQTT Protocol and Mosquitto on a Linux server.
+
 \subsection{MQTT}
-\subsubsection{JavaScript Library: MQTT.js}
-we use MQTT.js and async-mqtt to bring MQTT in our JavaScript library.
-\subsubsection{Android Library: MqttAndroidClient}
-we use MqttAndroidClient to bring MQTT in our Android library.
+MQTT is an lightweight messaging protocol for the Internet of Things (IoT). As it allows connecting large number of devices and bi-directional communications, it is ideal for being message broker in a publish/subscribe infrastructure. The protocol supports a variety of popular programming languages and platforms\cite{mqtt}. MQTT is lightweight and optimizes network bandwidth because of small message headers. Many devices rely on unreliable cellular networks to communicate. The support for persistent sessions in MQTT reduces the time it takes for the client to reconnect with the message broker.
+
+We installed a open-source MQTT broker on a server. This broker is Eclipse Mosquitto™ and offers MQTT server and client implementations that are compliant with relevant standards.
+\cite{mosquitto}
+
+\subsection{Server Specifications}
+We installed Mosquitto on a VPS with Ubuntu 18.02 operating system to have a running MQTT broker. This VPS has an public IP address, so devices can connect over the internet as clients. Hardware specification of this VPS are 1 CPU, 1GB RAM and 20GB SDD. 
+
+\section{Deriving The Interface}
+Developers should derive interfaces from Application State Models. These interface must be written in the programming language of source and target applications. Developers should write a glue code to connect source code of existing application and use the interfaces of Application State Models. These interfaces should be used as a type for a run-time state and they guarantee these values. These interfaces can be written by developers or get generated with ASML CLI.
 
 \section{Libraries}
-\subsection{JavaScript Library}
-https://www.npmjs.com/package/rsm-node
+Two different libraries are developed in two popular programming languages which are JavaScript and Java. These libraries are using native API of their platform (Desktop and Android) to help developers to implement the approach of run-time state migration. Each library is using a client library for MQTT Protocol to manage the communicate with other devices. Developers must write some glue code to integrate libraries into existing applications.
 
-\subsubsection{Installation}
-\subsubsection{API}
-\subsubsection{Usage}
+\FloatBarrier
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{../figures/libraries-diagram}
+    \centering
+    \caption{The component diagram of a library}
+    \label{fig:mvp}
+\end{figure}
+\FloatBarrier
+
+\subsection{API Reference}
+At the moment, there is two libraries in different programming languages. For the sake of simplicity of API of libraries, we drafted an API Reference guideline, so all libraries have the same API. Also, if other developers want to support other programming languages they can follow this API Reference. Currently, these methods are developed in a JavaScript library and an Android library.
+
+\subsubsection{addModel}
+Each Application State Model must be added to the library. This method allow developers to add the support of a Application State Model by adding its interface as a input parameter.
+
+\subsubsection{getModel}
+This method allows retrieving the added Application State Model by its name.
+
+\subsubsection{getModels}
+This method allows retrieving all Application State Models that the device is supporting. 
+
+\subsubsection{introduce}
+An application should introduce itself to other applications on the network via middleware. In this method configuration parameters must be provided. These parameters are device identification, device and application name, middleware IP address and a value that shows if the device is a new device. Library should generate a unique device identification like UUID. This method subscribes the device to online topic and all topics of supported Application State Models then publishes configuration parameters as a text message in JSON format via MQTT Protocol to corresponding topics. The middleware forward the message to all devices which support the same Application State Model and library should add the source device in devices list. Also, the target device responses with its introduction message but only to the source device. Thereby, the source device adds target device to devices list. For instance, Application State Models which Mailspring supports are search and sending-email. Also, K-9 Mail only supports sending-email. Listing \ref{api-introduction-source} shows the introduction of Mailspring published to all devices which support search and sending-email. 
+
+\lstset{
+  label=lis:api-introduction-source,caption=The source device introduction message.
+}
+\begin{lstlisting}[language=json]
+// topics:
+// search
+// sending-email
+
+{
+   "action":"device",
+   "data":{
+      "device":{
+         "id":"35fe23c2-bf7c-4988-b934-46f7ba12a807",
+         "name":"Mailspring - macOS"
+      },
+      "new":true
+   }
+}
+\end{lstlisting}
+
+Also, Listing \ref{lis:api-introduction-target} shows K-9 Mail introduction respond which only published to Mailspring's search topic.
+\lstset{
+  label=lis:api-introduction-target,caption=The target device introduction respond message.
+}
+\begin{lstlisting}[language=json]
+// topics:
+// search/35fe23c2-bf7c-4988-b934-46f7ba12a807
+
+{
+   "action":"device",
+   "data":{
+      "device":{
+         "id":"46f7ba12a807-bf7c-4988-b934-35fe23c2",
+         "name":"K-9 Mail - Android"
+      }
+   }
+}
+\end{lstlisting}
+\subsubsection{getDevice}
+This method allows fetching the configuration parameters of the current device. This parameters should set by introduction method.
+
+\subsubsection{setState}
+This method allows storing the current run-time state in the library. If a  device request for a run-time state, it is ready to get migrated. 
+
+\subsubsection{setHasState}
+A device must have a run-time state to migrate. This method notifies other devices about having a run-time state for a particular Application State Model. This methods sends a text message in JSON format via MQTT Procotol to all topics of supported Application State Models. Other devices should store this device in their devices list. For instance, Application State Models which Mailspring supports are search and sending-email, Listing \ref{lis:api-sethasstate} shows Mailpsring publish a message to corresponding topics.
+
+\lstset{
+  label=lis:api-sethasstate,caption=Mailspring informs other devices that has a run-time state.
+}
+\begin{lstlisting}[language=json]
+// topics:
+// search
+// sending-email
+
+{
+   "action":"has-state",
+   "data":{
+      "device":{
+         "_id":"35fe23c2-bf7c-4988-b934-46f7ba12a807",
+         "name":"Mailspring - macOS"
+      },
+      "value":true
+   }
+}
+\end{lstlisting}
+
+
+\subsubsection{getDevices}
+For run-time state migration, the target device must be known and get selected. A list of devices which support common Application State Models should stored in library. This method allows fetching all devices for a particular Application State Model. Moreover, it should be distinguishable if a device has a run-time state or it only supports the same Application State Model.
+
+\subsubsection{getStateDevice}
+After target device got chosen from \textit{getDevices} method, source device can request its run-time state. This method allows get a run-time state of a particular Application State Model from a particular device. This method should sends a text message in JSON format via MQTT Protocol to the target device and request its run-time state. Listing \ref{api-getstate} shows an example which Mailspring request a run-time state of search Application State Model from K-9 Mail by publishing a message to the corresponding topic.
+
+\lstset{
+  label=lis:api-getstate,caption=Mailspring request a run-time state from K-9 Mail.
+}
+\begin{lstlisting}[language=json]
+// topic:
+// search/46f7ba12a807-bf7c-4988-b934-35fe23c2
+
+{
+   "action":"request-state",
+   "data":{
+      "device":{
+         "_id":"35fe23c2-bf7c-4988-b934-46f7ba12a807",
+         "name":"Mailspring - macOS"
+      }
+   }
+}
+\end{lstlisting}
+\subsubsection{sendState}
+This method allows devices send a particular run-time state to a particular device. This migration process can be the push method, which sends the run-time state directly to a target device or the pull method which is a respond to the request of \textit{getStateDevice} method. Listing \ref{lis:api-sendstate} shows K-9 Mail sends the run-time state of search Application State Model to Mailspring by publishing a message to the corresponding topic.
+
+\lstset{
+  label=lis:api-sendstate,caption=K-9 Mail sends run-time state of search to Mailspring.
+}
+\begin{lstlisting}[language=json]
+// topic:
+// search/35fe23c2-bf7c-4988-b934-46f7ba12a807
+
+{
+   "action":"response-state",
+   "data":{
+      "device":{
+         "_id":"46f7ba12a807-bf7c-4988-b934-35fe23c2",
+         "name":"K-9 Mail - Android"
+      },
+      "state":{
+         "query":"this is a test",
+         "submit":true
+      }
+   }
+}
+\end{lstlisting}
+
+\subsubsection{setMigration}
+This method allows the target device notifies the source device about finalizing the run-time state migration process. This method should be called when the target application adjusted the new run-time time state to its UI. This method should sends a text message in JSON format via MQTT Protocol to the source device and inform the end of migration. Listing \ref{lis:api-sendstate} shows Mailspring sends the migration message of search Application State Model to K-9 Mail by publishing a message to the corresponding topic.
+
+\lstset{
+  label=lis:api-setmigration,caption=K-9 Mail sends run-time state of search to Mailspring.
+}
+\begin{lstlisting}[language=json]
+// topic:
+// search/46f7ba12a807-bf7c-4988-b934-35fe23c2
+
+{
+   "action":"migration",
+   "data":{
+      "device":{
+         "_id":"35fe23c2-bf7c-4988-b934-46f7ba12a807",
+         "name":"Mailspring - macOS"
+      }
+   }
+}
+\end{lstlisting}
+
+\subsection{Callback Events}
+Devices should get notice when they received a message via middleware. The library is responsible to process of selecting messages for reception and processing them. There should be callback events which allows developers to implement a proper behavior. This implementation is part of the glue code.
+
+\subsubsection{onStateRequest}
+This event should be called on target application, when source application requests a run-time state via \textit{getStateDevice} method.
+
+\subsubsection{onStateReceive}
+This event should be called on source application, when target application sends a run-time state via \textit{sendState} method.
+
+\subsubsection{onStateMigration}
+This event should be called on source application, when target application  finalized the run-time state migration via \textit{setMigration} method.
+
+\subsubsection{onDeviceJoin}
+This event should be called on any application, when a devices which supports the same Application State Models, joins the network via \textit{introduction} method.
+
+\subsubsection{onDeviceLeave}
+This event should be called on any application, when a devices which supports the same Application State Models, leaves the network.
+
+
+\subsection{JavaScript Library}
+In recent years JavaScript is one the most popular programming languages and supports various different platforms. Also, TypeScript is a programming language which is a superset of JavaScript and transcompiles to JavaScript  \cite{typescript}. In our approach, the API Reference methods are implemented in a JavaScript library. This library is written in TypeScript which supports static typing. The library source code is available on GitHub\footnote{\url{https://github.com/asml-lang/rsm-node}} and published on NPM\footnote{\url{https://www.npmjs.com/package/rsm-node}}.
+
+The JavaScript library is using \lstinline[basicstyle=\ttfamily]{MQTT.js} and \lstinline[basicstyle=\ttfamily]{async-mqtt} libraries to bring MQTT Protocol in our JavaScript library.
+
+
 \subsection{Android Library}
-\subsubsection{Installation}
-\subsubsection{API}
-\subsubsection{Usage}
+As the run-time state migration approach meant to be supported on different platforms, we implemented the API Reference methods in another library for Android to support mobile devices. This library is written in Java and
+the source code is available on GitHub\footnote{\url{https://github.com/asml-lang/rsm-android}}. Also, it is published on Bintray\footnote{\url{https://bintray.com/saman/maven/rsm-android}}.
+
+The Android library is using \lstinline[basicstyle=\ttfamily]{paho-mqtt} library to bring MQTT Protocol in our Android library.
 
 \section{Demo Applications (MVP)}
-\subsection{JavaScript Demo}
-A simple Electron app using rsm-node library the approach
-https://github.com/asml-lang/rsm-demo
+Two demo applications are developed as minimum viable products (MVP). The purpose of developing these application is testing the implementation part of the approach. Figure \ref{fig:mvp} shows the screenshot of these applications. A Desktop application\footnote{\url{https://github.com/asml-lang/rsm-demo}} which is develop by Electron and written in JavaScript and an Android application\footnote{\url{https://github.com/asml-lang/rsm-demo-android}} written in Java. Both applications are using corresponding library.
 
-\subsection{Android Demo}
-A simple Android app using rsm-android library to test the approach
+\FloatBarrier
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{../figures/mvp.png}
+    \centering
+    \caption{Electron (Left) and Android (Right) MVP Applications}
+    \label{fig:mvp}
+\end{figure}
+\FloatBarrier
 
-\section{Transferring Run-time State}
-\include{chapters/5-implementation/transferring_run-time_state}
+% \section{Transferring Run-time State}
+% \input{chapters/7-implementation/transferring_run-time_state}
 
-\section{Helper Tools}
-\subsection{ASML Schema Library}
-A repository which contains last est version of ASML JSON Schema files.
-
-https://www.npmjs.com/package/asml
-
-\subsection{ASML Editor}
-an editor that developers can play with the ASML and ASM and RSM live.
-
-https://asml-lang.github.io/asml/editor/
-
-\subsection{ASML Validator Library}
-a library to validate the DSL, which it used in asml-cli and rsm-node.
-
-https://www.npmjs.com/package/asml-validator
-
-\subsubsection{Installation}
-\subsubsection{API}
-\subsubsection{Usage}
-
-\subsection{ASML Command-line Interface}
-https://www.npmjs.com/package/asml-cli
-
-\subsubsection{Installation}
-\begin{verbatim}
-npm install -g asml-cli
-\end{verbatim}
-\subsubsection{Usage}
-Parameters:
-\begin{itemize}
-\item -g Generate
-\item -v Validate
-\item -l Language
-\end{itemize}
-\begin{verbatim}
-asml -g/-v [folder/file path] -l [programming language]
-\end{verbatim}
-Example:
-\begin{verbatim}
-asml -g ./app/src/models -l java
-\end{verbatim}
-\subsubsection{Language Support}
-CLI support interface generating in these programming languages:
-Ruby, JavaScript, Flow, Rust, Kotlin, Dart, Python, C\#, Go, C++, Java, TypeScript, Swift, Objective-C, Elm
+\input{chapters/7-implementation/helper}

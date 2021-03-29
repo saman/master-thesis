@@ -12,21 +12,21 @@ The advantage of having an individual model for each state is improving interope
 For example, an e-mail domain application has a calendar that can migrate data with a phone calendar application.
 Also, there is no need to model the states which are not migratable. So, it reduces the time of modeling state and the amount models. 
 
-Figure \ref{fig:asml-overview} shows an overview of Application State Modeling Language (see \fcircone). The model in ASML is called Application State Model (see \fcirctwo), which is discussed in subchapter 5.2. The state’s actual value is Run-Time State (see \fcircthree), which is discussed in subchapter 5.3.
+Figure \ref{fig:asml-overview} shows an overview of Application State Modeling Language (see \fcircone). The model in ASML is called Application State Model (see \fcirctwo), which is discussed in subchapter 5.2. There are some applications support the run-time state migration and have common Application State Models (see \fcircthree). The  actual values of a state on run-time is Run-Time State (see \fcircfour), which is discussed in subchapter 5.3.
 
 \FloatBarrier
 \begin{figure}
-    \includegraphics[scale=0.75]{../figures/asml-overview}
+    \includegraphics[scale=0.8]{../figures/asml-overview}
     \centering
     \caption{Overview of Application State Modeling Language}
     \label{fig:asml-overview}
 \end{figure}
 \FloatBarrier
 
-Considering three states which are modeled as "New Event Model" (see \fcircfour), "Search Model" (see \fcircfive), and "Sending E-mail Model" (see \fcircsix). In this example, we have three applications which are K-9 Mail is an e-mail client on an Android phone (see \fcircseven), Mailspring is another e-mail client which also has calendar management on macOS (see \fcirceight), and Woven Calendar is a calendar application (see \fcircnine). K-9 Mail has two migratable run-time states which are "Sending Email" and "Search". Mailpsring has three migratable states which are "New Event", "Sending E-mail" and "Search". Waven has two migratable run-time states which are "New Event" and "Search". As Mailpsring and Waven have a mutual "New Event" run-time state, they can share a common model: the “New Event Model”. However, Mailspring has two other common run-time states which can have common models with K9 Mail: the “Sending E-mail Model” and “Search Model”. So, Mailspring and Woven can migrate actual run-time data of the “New Event” state. Furthermore, Mailspring and K-9 can migrate actual run-time data of the “Sending E-mail” state and the “Search” state. This shows a same model can be used for different applications.
+Considering three states which are modeled as “Sending E-mail Model”, “Search Model” and “New Event Model”. In this example, we have three applications which are K-9 Mail is an e-mail client on an Android phone, Mailspring is another e-mail client which also has calendar management on macOS, and Woven Calendar is a calendar application. K-9 Mail has two migratable run-time states, which are “Sending E-mail” and “Search". Mailpsring has three migratable states, which are “New Event", “Sending E-mail” and “Search". Waven has two migratable run-time states, which are “New Event” and “Search". As Mailpsring and Waven have a mutual “New Event” run-time state, they can share a common model: the “New Event Model". However, Mailspring has two other common run-time states which have common models with K9 Mail: the “Sending E-mail Model” and “Search Model". So, Mailspring and Woven can migrate actual run-time data of the “New Event” state. Furthermore, Mailspring and K-9 can migrate actual run-time data of the “Sending E-mail” state and the “Search” state. This shows the same model can be used for different applications.
 
 \subsection{Metamodel}
-Figure \ref{fig:asml-meta-model} shows the metamodel of our DSL as an UML class diagram. A mapping document can describe one state. Each state specified in the mapping document has a unique name. The extra information of a state is the version and author that can be defined in Number and String. Each state can have multiple values. Each value consists of a unique name and a type which can be a primitive type like Array, Object, Boolean, File, Number, and String. Also, a value can have some additional attributes like format, regex pattern and etc.
+Figure \ref{fig:asml-meta-model} shows the metamodel of our DSL as an UML class diagram. A Application State Model can describe one state. Each state specified in the Application State Model has a unique name. The extra information of a state is the version and author that can be defined in Number and String. Each state can have multiple values. Each value consists of a unique name and a type which can be a primitive type like Array, Object, Boolean, File, Number, and String. Also, a value can have some constraints like format, regex pattern, required and etc.
 
 \FloatBarrier
 \begin{figure}
@@ -65,7 +65,7 @@ For instance, the simple JSON document in Listing \ref{lis:json}, can be declare
 }
 \end{lstlisting}
 
-JSON Schema can define a document must have several properties, including regular data-types like objects, arrays, strings, booleans, numbers and, null. Each of these types has different keywords that help to specify and restrict the schema. The most important attribute is “type” whose value is defining the schema. Constraints can be applied on an instance by adding validation keywords to the schema \cite{json-model}. For example in Listing \ref{lis:json-schema}, \lstinline[basicstyle=\ttfamily]|{"type": "string"}| specify a value with string type.
+JSON Schema can define a document must have several , including regular data-types like objects, arrays, strings, booleans, numbers and, null. Each of these types has different keywords that help to specify and restrict the schema. The most important attribute is “type” whose value is defining the schema. Constraints can be applied on an instance by adding validation keywords to the schema \cite{json-model}. For example in Listing \ref{lis:json-schema}, \lstinline[basicstyle=\ttfamily]|{"type": "string"}| specify a value with string type.
 
 We use YAML syntax to represent the Application State Model in JSON Schema in this thesis for readability reasons. YAML is a human-readable syntax and can be converted to JSON syntax without extra configuration. Listing \ref{lis:yaml-simple} shows a simple example based on Listing \ref{lis:json-schema} which is a JSON Schema document.
 
@@ -99,7 +99,7 @@ Property             & Description                                              
 title                & The name of the DSL.                                                                     & Application State Modeling Language                                                                                     \\\hline
 description          & The description of the DSL.                                                              & A DSL for enabling run-time state migration between same-purpose applications of different vendors \\\hline
 version              & The current version of the DSL, which can be used in for version checking for validating models. & 1.0.0                                                                                                                   \\\hline
-properties           & Contains properties which a model should have.                                       & \{"asml", "info", "properties", "required"\}                                                                            \\\hline
+properties           & Contains values which an Application State Model should have.                                       & \{"asml", "info", "properties", "required"\}                                                                            \\\hline
 required             & Defining the requited items which a model must have.                                     & {[}"asml", "info", "properties"{]}                                                                                      \\\hline
 additionalProperties & The DSL is not allowing developers to add additional properties to models.               & false                                                                                                                   \\\hline
 definitions          & Contains the definition of the DSL items and the basic JSON Schema specification.        & version, asml, info, contact, Schema
