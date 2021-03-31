@@ -54,14 +54,7 @@
 
 
 % Mint command
-% \newcommand{\code}[1][2][3][4]{
-% \FloatBarrier
-% \begin{listing}
-% \begin{minted}[bgcolor=background,linenos,frame=single,framesep=2mm,rulecolor=background]{#1}
-% #2
-% \end{minted}
-% \label{#3}
-% \caption{#4}
-% \end{listing}
-% \FloatBarrier
-% }
+\newminted[json]{json}{fontsize=\normalsize,bgcolor=background,linenos,frame=single,framesep=2mm,rulecolor=background}
+\newminted[yaml]{yaml}{fontsize=\normalsize,bgcolor=background,linenos,frame=single,framesep=2mm,rulecolor=background}
+
+

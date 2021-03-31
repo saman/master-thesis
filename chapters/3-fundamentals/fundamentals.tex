@@ -9,15 +9,47 @@ JSON (JavaScript Object Notation) is a file format. It is lightweight and human-
 
 A simple JSON documents is shown in Listing \ref{lis:json}.
 
-\lstset{
-  label=lis:json, caption=A simple JSON document., 
-}
-\begin{lstlisting}[language=json]
+\FloatBarrier
+\begin{code}
+\begin{json}
 {
     "fullname": "John Doe",
     "email": "john@mail.upb.de"
 }
+\end{json}
+\caption{A simple JSON document.}
+\label{lis:json}
+\end{code}
+\FloatBarrier
+
+\pagebreak
+\FloatBarrier
+\begin{code}
+\begin{yaml}
+properties:
+  fullname:
+    type: string
+  email:
+    type: string
+    format: email
+\end{yaml}
+\caption{A simple JSON document.}
+\label{lis:json}
+\end{code}
+\FloatBarrier
+\lstset{
+  label=lis:yaml-simple, caption=Example of expressing JSON Schema in YAML syntax., 
+}
+\begin{lstlisting}[language=yaml]
+properties:
+  fullname:
+    type: string
+  email:
+    type: string
+    format: email
 \end{lstlisting}
+
+
 \section{Model-driven Software Engineering}
 \section{Modeling Language}
 

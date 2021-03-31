@@ -24,7 +24,10 @@
 \usepackage{float}
 \usepackage{hyperref}
 \usepackage{multicol}
-\usepackage{minted}
+\usepackage[newfloat]{minted}
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=Listing}
+
 
 
 \usepackage[tableposition=bottom]{caption}

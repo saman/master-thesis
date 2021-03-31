@@ -17,16 +17,17 @@
 \expandafter{\language@yaml}
 {
     captionpos=b,
-    xleftmargin=.1\textwidth, xrightmargin=.1\textwidth,
+    xleftmargin=2mm, xrightmargin=2mm,
   backgroundcolor=\color{background},
   keywords={true,false,null,y,n},
   keywordstyle=\color{darkgray}\bfseries,
 %   basicstyle=\YAMLkeystyle,           % assuming a key comes first
-basicstyle=\ttfamily\footnotesize,
+basicstyle=\ttfamily,
   sensitive=false,
   comment=[l]{\#},
   numbers=left,
-    numberstyle=\normalfont\ttfamily\footnotesize\color{gray},
+    numberstyle=\normalfont\ttfamily\small\color{gray},
+    numbersep=7mm,    
   morecomment=[s]{/*}{*/},
   commentstyle=\color{purple}\ttfamily,
   stringstyle=\YAMLvaluestyle\ttfamily,
@@ -35,8 +36,9 @@ basicstyle=\ttfamily\footnotesize,
   moredelim=**[il][\YAMLcolonstyle{:}\YAMLvaluestyle]{:},   % switch to value style at :
   morestring=[b]',
   morestring=[b]",
-  frame=single,framesep=5pt,framerule=0pt,
+  frame=single,framesep=3mm,framerule=0pt,
   aboveskip=5mm,
+  abovecaptionskip=5mm,
   literate =    {---}{{\ProcessThreeDashes}}3
                 {>}{{\textcolor{red}\textgreater}}1     
                 {|}{{\textcolor{red}\textbar}}1 
@@ -58,7 +60,7 @@ basicstyle=\ttfamily\footnotesize,
 \lstdefinelanguage{json}{
     captionpos=b,
     xleftmargin=.1\textwidth, xrightmargin=.1\textwidth,
-    basicstyle=\normalfont\ttfamily\footnotesize,
+    basicstyle=\normalfont\ttfamily\footnotesize\normalfont,
     numbers=left,
     numberstyle=\normalfont\ttfamily\footnotesize\color{gray},
     stepnumber=1,
@@ -68,13 +70,14 @@ basicstyle=\ttfamily\footnotesize,
     frame=single,framesep=5pt,framerule=0pt,
     backgroundcolor=\color{background},
     aboveskip=5mm,
+    % abovecaptionskip=10pt,
     string=[s]{"}{"},
     stringstyle=\color{black},
     comment=[l]{:},
     commentstyle=\color{blue},
 }
 
-\usemintedstyle{vs}
+% \usemintedstyle{tango}
 
 \definecolor{mypink2}{RGB}{219, 48, 122}
 \renewcommand{\theFancyVerbLine}{\normalfont\ttfamily\footnotesize\small \textcolor{gray}{\oldstylenums{\arabic{FancyVerbLine}}}}
