@@ -48,10 +48,9 @@ A declarative schema specification would give programming languages and develope
 The schema can be another JSON document that defines acceptable key-value pairs.
 For instance, the simple JSON document in Listing \ref{lis:json}, can be declare in JSON Schema document in Listing \ref{lis:json-schema}
 
-\lstset{
-  label=lis:json-schema, caption=A simple JSON Schema document.
-}
-\begin{lstlisting}[language=json]
+\FloatBarrier
+\begin{code}
+\begin{json}
 {
     "properties": {
         "fullname": {
@@ -63,11 +62,16 @@ For instance, the simple JSON document in Listing \ref{lis:json}, can be declare
         }
     }
 }
-\end{lstlisting}
+\end{json}
+\caption{A simple JSON Schema document}
+\label{lis:json-schema}
+\end{code}
+\FloatBarrier
 
 JSON Schema can define a document must have several , including regular data-types like objects, arrays, strings, booleans, numbers and, null. Each of these types has different keywords that help to specify and restrict the schema. The most important attribute is “type” whose value is defining the schema. Constraints can be applied on an instance by adding validation keywords to the schema \cite{json-model}. For example in Listing \ref{lis:json-schema}, \lstinline[basicstyle=\ttfamily]|{"type": "string"}| specify a value with string type.
 
 We use YAML syntax to represent the Application State Model in JSON Schema in this thesis for readability reasons. YAML is a human-readable syntax and can be converted to JSON syntax without extra configuration. Listing \ref{lis:yaml-simple} shows a simple example based on Listing \ref{lis:json-schema} which is a JSON Schema document.
+
 
 \lstset{
   label=lis:yaml-simple, caption=Example of expressing JSON Schema in YAML syntax., 
@@ -80,6 +84,7 @@ properties:
     type: string
     format: email
 \end{lstlisting}
+
 
 \subsection{Language Schema}
 The Application State Language itself is a JSON Schema document based on JSON Schema Draft-07

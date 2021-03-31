@@ -23,7 +23,7 @@ Two different libraries are developed in two popular programming languages, whic
     \includegraphics[width=\linewidth]{../figures/libraries-diagram}
     \centering
     \caption{The component diagram of a library}
-    \label{fig:mvp}
+    \label{fig:libraries-component}
 \end{figure}
 \FloatBarrier
 
@@ -42,14 +42,14 @@ This method allows retrieving all Application State Models that the device is su
 \subsubsection{introduce}
 An application should introduce itself to other applications on the network via middleware. In this method, configuration parameters must be provided. These parameters are device identification, device and application name, middleware IP address, and a value that shows if it is a new device. The library should generate a unique device identification like UUID. This method subscribes the device to the online topic, and all topics of supported Application State Models then publish configuration parameters as a text message in JSON format via MQTT Protocol to corresponding topics. The middleware forwards the message to all devices that support the same Application State Model. The library should add the source device to the devices list. Also, the target device responds with its introduction message but only to the source device. Thereby, the source device adds the target device to the devices list. For instance, Application State Models, which Mailspring supports, are search and sending-email. Also, K-9 Mail only supports sending-email. Listing \ref{lis:api-introduction-source} shows the introduction of Mailspring published to all devices which support search and sending-email. 
 
-\lstset{
-  label=lis:api-introduction-source,caption=The source device introduction message.
-}
-\begin{lstlisting}[language=json]
+\FloatBarrier
+\begin{code}
+\begin{js2}
 // topics:
 // search
 // sending-email
-
+\end{js2}
+\begin{json}
 {
    "action":"device",
    "data":{
@@ -60,16 +60,23 @@ An application should introduce itself to other applications on the network via 
       "new":true
    }
 }
-\end{lstlisting}
+\end{json}
+\caption{The source device introduction message.}
+\label{lis:api-introduction-source}
+\end{code}
+\FloatBarrier
+
 
 Also, Listing \ref{lis:api-introduction-target} shows K-9 Mail introduction respond which only published to Mailspring's search topic.
-\lstset{
-  label=lis:api-introduction-target,caption=The target device introduction respond message.
-}
-\begin{lstlisting}[language=json]
+
+\FloatBarrier
+\begin{code}
+\begin{js2}
 // topics:
 // search/35fe23c2-bf7c-4988-b934-46f7ba12a807
+\end{js2}
 
+\begin{json}
 {
    "action":"device",
    "data":{
@@ -79,7 +86,13 @@ Also, Listing \ref{lis:api-introduction-target} shows K-9 Mail introduction resp
       }
    }
 }
-\end{lstlisting}
+\end{json}
+\caption{The target device introduction respond message.}
+\label{lis:api-introduction-target}
+\end{code}
+\FloatBarrier
+
+
 \subsubsection{getDevice}
 This method allows fetching the configuration parameters of the current device. These parameters should set by the introduction method.
 
@@ -89,14 +102,16 @@ This method allows storing the current run-time state in the library. If a  devi
 \subsubsection{setHasState}
 A device must have a run-time state to migrate. This method notifies other devices about having a run-time state for a particular Application State Model. This method sends a text message in JSON format via MQTT Procotol to all supported Application State Models topics. Other devices should store this device in the list of their devices. For instance, Application State Models, which Mailspring supports are search and sending-email, Listing \ref{lis:api-sethasstate} shows Mailpsring publish a message to corresponding topics.
 
-\lstset{
-  label=lis:api-sethasstate,caption=Mailspring informs other devices that has a run-time state.
-}
-\begin{lstlisting}[language=json]
+
+\FloatBarrier
+\begin{code}
+\begin{js2}
 // topics:
 // search
 // sending-email
+\end{js2}
 
+\begin{json}
 {
    "action":"has-state",
    "data":{
@@ -107,22 +122,27 @@ A device must have a run-time state to migrate. This method notifies other devic
       "value":true
    }
 }
-\end{lstlisting}
+\end{json}
+\caption{Mailspring informs other devices that has a run-time state.}
+\label{lis:api-sethasstate}
+\end{code}
+\FloatBarrier
 
 
 \subsubsection{getDevices}
 For run-time state migration, the target device must be known and get selected. A list of devices that support common Application State Models should be stored in the library. This method allows fetching all devices for a particular Application State Model. Moreover, it should be distinguishable if a device has a run-time state or it only supports the same Application State Model.
 
 \subsubsection{getStateDevice}
-After the target device got chosen from \textit{getDevices} method, the source device can request its run-time state. This method allows the get a run-time state of a particular Application State Model from a particular device. This method should send a text message in JSON format via MQTT Protocol to the target device and request its run-time state. Listing \ref{api-getstate} shows an example in which Mailspring requests a run-time state of search Application State Model from K-9 Mail by publishing a message to the corresponding topic.
+After the target device got chosen from \textit{getDevices} method, the source device can request its run-time state. This method allows the get a run-time state of a particular Application State Model from a particular device. This method should send a text message in JSON format via MQTT Protocol to the target device and request its run-time state. Listing \ref{lis:api-getstate} shows an example in which Mailspring requests a run-time state of search Application State Model from K-9 Mail by publishing a message to the corresponding topic.
 
-\lstset{
-  label=lis:api-getstate,caption=Mailspring request a run-time state from K-9 Mail.
-}
-\begin{lstlisting}[language=json]
+\FloatBarrier
+\begin{code}
+\begin{js2}
 // topic:
 // search/46f7ba12a807-bf7c-4988-b934-35fe23c2
+\end{js2}
 
+\begin{json}
 {
    "action":"request-state",
    "data":{
@@ -132,17 +152,24 @@ After the target device got chosen from \textit{getDevices} method, the source d
       }
    }
 }
-\end{lstlisting}
+\end{json}
+\caption{Mailspring request a run-time state from K-9 Mail.}
+\label{lis:api-getstate}
+\end{code}
+\FloatBarrier
+
 \subsubsection{sendState}
 This method allows devices to send a particular run-time state to a particular device. This migration process can be the push method, which sends the run-time state directly to a target device, or the pull method, which response to the request of \textit{getStateDevice} method. Listing \ref{lis:api-sendstate} shows K-9 Mail sends the run-time state of search Application State Model to Mailspring by publishing a message to the corresponding topic.
 
-\lstset{
-  label=lis:api-sendstate,caption=K-9 Mail sends run-time state of search to Mailspring.
-}
-\begin{lstlisting}[language=json]
+
+\FloatBarrier
+\begin{code}
+\begin{js2}
 // topic:
 // search/35fe23c2-bf7c-4988-b934-46f7ba12a807
+\end{js2}
 
+\begin{json}
 {
    "action":"response-state",
    "data":{
@@ -156,18 +183,23 @@ This method allows devices to send a particular run-time state to a particular d
       }
    }
 }
-\end{lstlisting}
+\end{json}
+\caption{K-9 Mail sends run-time state of search to Mailspring.}
+\label{lis:api-sendstate}
+\end{code}
+\FloatBarrier
 
 \subsubsection{setMigration}
 This method allows the target device to notify the source device about finalizing the run-time state migration process. This method should be called when the target application adjusted the new run-time time state to its UI. This method should send a text message in JSON format via MQTT Protocol to the source device and inform the end of migration. Listing \ref{lis:api-sendstate} shows Mailspring sends the migration message of search Application State Model to K-9 Mail by publishing a message to the corresponding topic.
 
-\lstset{
-  label=lis:api-setmigration,caption=K-9 Mail sends run-time state of search to Mailspring.
-}
-\begin{lstlisting}[language=json]
+\FloatBarrier
+\begin{code}
+\begin{js2}
 // topic:
 // search/46f7ba12a807-bf7c-4988-b934-35fe23c2
+\end{js2}
 
+\begin{json}
 {
    "action":"migration",
    "data":{
@@ -177,7 +209,11 @@ This method allows the target device to notify the source device about finalizin
       }
    }
 }
-\end{lstlisting}
+\end{json}
+\caption{K-9 Mail sends migration message to Mailspring.}
+\label{lis:api-setmigration}
+\end{code}
+\FloatBarrier
 
 \subsection{Callback Events}
 Devices should get a notice when they received a message via middleware. The library is responsible for the process of selecting messages for reception and processing them. There should be callback events that allow developers to implement a proper behavior. This implementation is part of the glue code.

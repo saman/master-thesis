@@ -105,10 +105,10 @@ Interfaces are derived from Application State Model, and they guarantee certain 
 To integrate the libraries into source code, developers should implement some glue code and use the interfaces like Figure \ref{fig:solution-overview}.
 
 Considering Mailspring written in TypeScript, Listing \ref{lis:search-interface} shows a generated interface based on search Application State Model (Listing \ref{lis:search-schema}).
-\lstset{
-  label=lis:search-interface, caption=Note Writing example interface in TypeScript.
-}
-\begin{lstlisting}[language=yaml]
+
+\FloatBarrier
+\begin{code}
+\begin{js}
 export interface SearchObject {
     /**
      * the query of search
@@ -119,9 +119,12 @@ export interface SearchObject {
      */
     submit?: boolean;
 }
+\end{js}
+\caption{Note Writing example interface in TypeScript.}
+\label{lis:search-interface}
+\end{code}
+\FloatBarrier
 
-
-\end{lstlisting}
 
 \section{Life Cycles}
 After explanation of entities of the architecture in previous sections, some life cycles should be considered to enable the support of run-time state migration. These life cycles consist of main entities and sequence of events discussed in the events section, and they are implemented in chapter \ref{ch:implementation}. 

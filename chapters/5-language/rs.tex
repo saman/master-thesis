@@ -6,10 +6,10 @@ Target application should adjust itself with the new state.
 \subsubsection{Composing New E-mail}
 Based on composing new e-mail Application State Model (Listing \ref{lis:sending-email-schema}) valid example values for sending e-mail state is shown in Listing \ref{lis:sending-email-state}.
 
-\lstset{
-  label=lis:sending-email-state, caption=A Run-time State for sending e-mail as JSON document., 
-}
-\begin{lstlisting}[language=json]
+
+\FloatBarrier
+\begin{code}
+\begin{json}
 {
   "from": "saman@mail.upb.de",
   "to": [
@@ -19,29 +19,40 @@ Based on composing new e-mail Application State Model (Listing \ref{lis:sending-
   "subject": "Master Thesis Documents",
   "body": "Dear Prof. Engels\n, Here is my master thesis."
 }
-\end{lstlisting}
-
+\end{json}
+\caption{A Run-time State for sending e-mail as JSON document.}
+\label{lis:sending-email-state}
+\end{code}
+\FloatBarrier
 
 \subsubsection{Writing Note}
 Based on writing note Application State Model (Listing \ref{lis:note-schema}) valid example values for writing note state is shown in Listing \ref{lis:writing-note-state}.
  
-\lstset{
-  label=lis:writing-note-state, caption=A Run-time State for writing note as JSON document.
-}
-\begin{lstlisting}[language=json]
+\FloatBarrier
+\begin{code}
+\begin{json}
 {
     "text": "ideas about the thesis"
 }
-\end{lstlisting}
+\end{json}
+\caption{A Run-time State for writing note as JSON document}
+\label{lis:writing-note-state}
+\end{code}
+\FloatBarrier
+
 
 \subsubsection{Search}
 Based on search Application State Model (Listing \ref{lis:search-schema}) valid example values for search state is shown in Listing \ref{lis:search-state}.
-\lstset{
-  label=lis:search-state, caption=A Run-time State for search as JSON document.
-}
-\begin{lstlisting}[language=json]
+
+\FloatBarrier
+\begin{code}
+\begin{json}
 {
     "query": "paderborn university",
     "submit": true
 }
-\end{lstlisting}
+\end{json}
+\caption{A Run-time State for search as JSON document.}
+\label{lis:search-state}
+\end{code}
+\FloatBarrier
