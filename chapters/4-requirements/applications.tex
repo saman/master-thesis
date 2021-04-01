@@ -1,0 +1,267 @@
+Based on \textbf{R1 Applicable on Existing Applications}, the following analysis is to determine what pairs of application states exist and what needs to be modeled.
+These applications are from different platforms, and they are interactive applications for end-users and have sufficient complexity (e.g., applications should not have only one single state).
+
+\subsection{State Analysis of Applications}
+In this section, we compared four pairs of existing applications to determine which states are common between applications. Also, the type of the states is categorized into three types which are run-time state (R), persistent state (P), and action (A). Furthermore, the "Migratable" column shows if the state can be a candidate for run-time state migration.
+
+\subsubsection{States of E-mail Applications}
+
+Table \ref{tab:states_of_email_applications} shows a list of available states of two open-source e-mail clients: Mailspring\footnote{\url{https://getmailspring.com/}} on macOS and K-9 Mail\footnote{\url{https://k9mail.app/}} on Android. Some states are migratable like "Single E-mail" and "Search View". The "Single E-mail" state contains a view of a single e-mail in reading mode. In "Search View" the user can search and find an e-mail by typing in a query input box. The information of some states like "Compose a new E-email", "Forward an E-mail" and "Replay an E-mail" are almost similar, and they can be considered as one state for sending an e-mail.
+
+\begin{table}[ht!]
+\begin{tabular}{lll|ll}
+State / E-mail client                   & Mailspring                & K-9 Mail                  & Type & Migratable                 \\ 
+\hline
+Welcome   Screen                        & \checkmark & \checkmark & P    &                            \\
+Account Registration                    & \checkmark &                           & P    &                            \\
+Account Login                           & \checkmark &                           & P    &                            \\
+Add an e-mail service account           & \checkmark & \checkmark & P    &                            \\
+Import   Settings                       &                           & \checkmark & P    &                            \\
+Export Settings and Accounts            &                           & \checkmark & P    &                            \\
+Settings                                & \checkmark & \checkmark & P    &                            \\
+Sync New E-mails                        & \checkmark & \checkmark & P    &                            \\
+Compose a   new E-email                 & \checkmark & \checkmark & R    & \checkmark  \\
+Forward an E-mail                       & \checkmark &                           & R    & \checkmark  \\
+Replay an   E-mail                      & \checkmark & \checkmark & R    & \checkmark  \\
+Sending an E-mail                       & \checkmark & \checkmark & A    &                            \\
+Trashing   an E-mail                    & \checkmark & \checkmark & A    &                            \\
+E-mails list (Inbox, Sent, Draft, …)    & \checkmark & \checkmark & P    &                            \\
+Single   E-mail                         & \checkmark & \checkmark & R    & \checkmark  \\
+Show Original Version of E-mail         & \checkmark &                           & R    &                            \\
+Search   View                           & \checkmark & \checkmark & R    & \checkmark  \\
+Searching                               & \checkmark & \checkmark & A    &                            \\
+Loading   E-mails                       & \checkmark & \checkmark & A    &                            \\
+Loading Activity Data                   & \checkmark &                           & A    &                            \\
+Activity   View                         & \checkmark &                           & P    &                            \\
+Exporting Activity Data                 & \checkmark &                           & A    &                            \\
+Sharing   Report of Activity Data       & \checkmark &                           & A    &                            \\
+Marking Star/Spam/Read/Unread an E-mail & \checkmark & \checkmark & A    &                           
+\end{tabular}
+\caption{States of E-mail Applications}
+\centering
+\label{tab:states_of_email_applications}
+\end{table} \FloatBarrier
+
+\newpage
+\subsubsection{States of Browsers}
+
+Table \ref{tab:state_browsers} shows a list of available states of two browser applications: Firefox\footnote{\url{https://www.mozilla.org/en-US/firefox/}} on macOS and Chrome\footnote{\url{https://www.google.com/chrome/}} on Android. The information in the current tab can be found in the "Current Tab" state. Also, searching is possible within the "Finding" state. Information of "Developer Console" and "Private/Incognito Mode" states is whether they are opened as a window or not.
+
+Some states information are form official Chrome Page lifecycle API\footnote{\url{https://developers.google.com/web/updates/2018/07/page-lifecycle-api}} and Mozilla Web API\footnote{\url{https://developer.mozilla.org/en-US/docs/Web/API}}. Also, For browsers there is a standard called W3C Page lifecycle API\footnote{\url{https://wicg.github.io/page-lifecycle/}}.
+
+
+\begin{table}[ht!]
+\begin{tabular}{lll|ll}
+State / Browser                                       & Firefox           & Chrome          & Type & Migratable                 \\ 
+\hline
+Home page                                             & \checkmark & \checkmark & P    &                            \\
+Single Tab (Preferences, Bookmarks, Performance,   …) & \checkmark & \checkmark & P    &                            \\
+Extensions   Tab                                      & \checkmark &                           & P    &                            \\
+Syncing                                               & \checkmark & \checkmark & A    &                            \\
+Browsing                                              & \checkmark & \checkmark & A    &                            \\
+Current Tab                                           & \checkmark & \checkmark & R    & \checkmark  \\
+Developer   Console                                   & \checkmark & \checkmark & P    &                            \\
+Signing in                                            & \checkmark & \checkmark & A    &                            \\
+Finding   (in page)                                   & \checkmark & \checkmark & R    & \checkmark  \\
+Printing                                              & \checkmark &                           & A    &                            \\
+Print View                                              & \checkmark &    \checkmark                       & P    &                            \\
+Downloading                                           & \checkmark & \checkmark & A    &                            \\
+Sharing                                               &                           & \checkmark & A    &                            \\
+Private/Incognito   Mode                              & \checkmark & \checkmark & R    & \checkmark  \\
+Light mode                                            &                           & \checkmark & R    &                           
+\end{tabular}
+\caption{States of Browsers applications}
+\label{tab:state_browsers}
+\end{table} \FloatBarrier
+
+
+\subsubsection{States of Video Player Applications}
+Table \ref{tab:states_video_players} shows a list of available states of two video player applications which are IINA\footnote{\url{https://iina.io/}} on macOS and VLC\footnote{\url{https://www.videolan.org/vlc/}} on Android. In these applications, all migratable states' are related to playing a video and can be considered almost identical. These states are "Pause", "Playing Video" and "Streaming". 
+
+To support run-time state migration on video players, we needed to access the persistent storage	and the video file. Considering these problems, run-time state migration for video players which have access to a persistent storage, is not the right choice. However, run-time state migration can be supported on video streaming applications with the same media.
+
+
+\begin{table}[ht!]
+\begin{tabular}{lll|ll}
+State / Video Player                                  & IINA                      & VLC                       & Type & Migratable                 \\ 
+\hline
+Welcome   Screen                                      & \checkmark & \checkmark & P    &                            \\
+Video player tips                                     &                           & \checkmark & P    &                            \\
+Audio   player tips                                   &                           & \checkmark & P    &                            \\
+Pause                                                 & \checkmark & \checkmark & R    & \checkmark  \\
+Deleting                                              &                           & \checkmark & A    &                            \\
+Browsing view                                         & \checkmark & \checkmark & R    &  \\
+Loading   Directories                                 &                           & \checkmark & A    &                            \\
+Single Page view (About, Settings, Audio,   Video, …) & \checkmark & \checkmark & P    &                            \\
+Search   result                                       &                           & \checkmark & R    &  \\
+Searching                                             &                           & \checkmark & A    &                            \\
+Playing   video                                       & \checkmark & \checkmark & R    & \checkmark  \\
+Playing audio                                         & \checkmark &                           & R    &                            \\
+Showing   picture                                     & \checkmark &                           & R    &                            \\
+Streaming                                             & \checkmark & \checkmark & R    & \checkmark  \\
+Loading   local network devices                       &                           & \checkmark & A    &                           
+\end{tabular}
+\caption{States of Video player applications}
+\label{tab:states_video_players}
+\end{table} \FloatBarrier
+
+\newpage
+\subsubsection{States of Note Taking Applications}
+Table \ref{tab:states_note_apps} shows a list of available states of two note-taking applications: Laverna\footnote{\url{https://laverna.cc/}} on macOS and Joplin\footnote{\url{https://joplinapp.org/}} on Android. Some states are migratable, which are "Search" and "Writing Note". In "Search" the user can search and find a note by typing in a query input box. In "Writing Note" the user enters some text as the note's content.
+
+\begin{table}[ht!]
+\begin{tabular}{lll|ll}
+State / Note taking application                          & Laverna                   & Joplin                    & Type & Migratable                 \\ 
+\hline
+Loading   Screen                                         & \checkmark &                           & P    &                            \\
+Welcome Screen                                           & \checkmark &                           & P    &                            \\
+Encryption   view                                        & \checkmark &                           & P    &                            \\
+Syncing on Cloud                                         & \checkmark & \checkmark & A    &                            \\
+Importing   and Exporting settings                       & \checkmark &                           & A    &                            \\
+Importing and Exporting data                             & \checkmark & \checkmark & A    &                            \\
+Single   Page view (All notes, Favorites, Settings, ...) & \checkmark & \checkmark & P    &                            \\
+Search                                                   & \checkmark & \checkmark & R    & \checkmark  \\
+Searching                                                & \checkmark & \checkmark & A    &                            \\
+Writing a Note                                           & \checkmark & \checkmark & R    & \checkmark  \\
+Writing a   Todo                                         &                           & \checkmark & R    &                            \\
+Saving a Note                                            & \checkmark & \checkmark & A    &                            \\
+Note   Properties                                        &                           & \checkmark & P    &                            \\
+New Notebook                                             & \checkmark & \checkmark & A    &                            \\
+New Tags                                                 & \checkmark & \checkmark & A    &                            \\
+Share view                                               &                           & \checkmark & P    &                            \\
+Trashing                                                 & \checkmark &                           & A    &                            \\
+Removing                                                 & \checkmark &                           & A    &                           
+\end{tabular}
+\caption{States of Note taking applications}
+\label{tab:states_note_apps}
+\end{table} \FloatBarrier
+
+\subsection{State Values}
+This section shows an analysis of the source code of two before mentioned email clients, Mailspring and K-9 Mail. These applications are open-source and their source code are freely accessible. The analysis of the source code and these values helps us to determine what possibly can be part of state specification and how we can define a state specification.
+
+Values of two migratable run-time states listed in tables. Table \ref{tab:compose_new_email_mailspring} and \ref{tab:compose_new_email_k9} are showing the "Sending an E-mail" state and Table \ref{tab:search_mailspring} and \ref{tab:search_k9} are showing the "Search View" state which were mentioned in comparison of these two applications (Table \ref{tab:states_of_email_applications}).
+
+
+
+\subsubsection{States Values of E-mail Applications}
+
+
+\FloatBarrier \begin{table}[H]
+\centering
+\begin{tabular}{lll}
+Field     & Type      & Example/Description                                    \\
+\hline
+id        & String/Id & pYkSAMPpfU9bU1E33219fbaJyVoQ71hS8Vvs7gDZC              \\
+aid       & String/Id & 0a6dbf86                                               \\
+v         & Number    & 3                                                      \\
+metadata  & Array     & Information   About Mail/Link tracking                 \\
+to        & Array     & []                                                     \\
+cc        & Array     & []                                                     \\
+bcc       & Array     & []                                                     \\
+from      & Array     & []                                                     \\
+replyto   & Array     & []                                                     \\
+date      & Number    & 1595782508                                             \\
+body      & String    & <div>This is a test   body</div><br/>                  \\
+files     & Array     & []                                                     \\
+unread    & Boolean   & False                                                  \\
+events    & Array     & []                                                     \\
+starred   & Boolean   & False                                                  \\
+threadid  & String/Id & “”                                                     \\
+subject   & String    & Test   Subject                                         \\
+draft     & Boolean   & True                                                   \\
+pristine  & Boolean   & False                                                  \\
+plaintext & Boolean   & False                                                  \\
+folder    & Object    & {}                                                     \\
+"file\_ids"  & Array  & []                                                  \\
+object    & String    & “draft”                                               
+\end{tabular}
+\caption{State Values: Compose a new Email in Mailspring}
+\label{tab:compose_new_email_mailspring}
+\end{table} \FloatBarrier
+
+
+
+\FloatBarrier \begin{table}[H]
+\centering
+\begin{tabular}{lll}
+Field     & Type      & Example/Description \\
+\hline
+\_ID            & String &  \\
+SEND\_DATE      & String     &                     \\
+SENDER         &  String    &                     \\
+RECEIVER         &  String    &                     \\
+SUBJECT        &  String    &                     \\
+TEXT        &  String    &                     \\
+ACCOUNT        &   String   &                     \\
+DELETE\_URI     &  String    &                     \\
+SENDER\_ADDRESS &   String   &                    \\
+RECEIVER\_ADDRESS &   String   &                    
+\end{tabular}
+\caption{State Values: Compose a new Email in K-9 Mail}
+\label{tab:compose_new_email_k9}
+\centering
+\end{table} \FloatBarrier
+
+
+
+\FloatBarrier \begin{table}[H]
+\centering
+\begin{tabular}{lll}
+Field       & Type    & Example/Description \\
+\hline
+isSearching & Boolean & False               \\
+query       & String  & “master   thesis”  
+\end{tabular}
+\caption{State Values: Search in Mailspring}
+\label{tab:search_mailspring}
+\end{table} \FloatBarrier
+
+
+
+\FloatBarrier \begin{table}[H]
+\centering
+\begin{tabular}{lll}
+Field & Type   & Example/Description \\
+\hline
+query & String & “master thesis”    
+\end{tabular}
+\caption{State Values: Search in K-9 Mail}
+\label{tab:search_k9}
+\end{table} \FloatBarrier
+
+
+\subsection{Modeling States}
+\subsubsection{Modeling States of E-mail Applications}
+To find common values in run-time states and define a state specification values of the state has be to analyzed and modeled. By define one state specification for each run-time state, these two applications can support same state specifications. For example in "Sending E-mail" state values in Table \ref{tab:compose_new_email_mailspring} and Table \ref{tab:compose_new_email_k9} have some common pair values like "from/SENDER", "to/RECEIVER", "subject/SUBJECT" and "body/TEXT". In Table \ref{tab:email-model} we modeled these values and it can be use to define a state specification. 
+
+
+\FloatBarrier\FloatBarrier \begin{table}[H]
+\centering
+\begin{tabular}{lll}
+Field   & Type   & Description                    \\ 
+\hline
+from    & String & The sender email               \\
+to      & Array of String  & The reciever email             \\
+subject & String & The body text of the email     \\
+body    & String & The subject text of the email 
+\end{tabular}
+\caption{Modeling the State: Sending-Email in E-mail Clients}
+\label{tab:email-model}
+\end{table} \FloatBarrier
+
+
+Furthermore, in "Search View" state there is a common pair value: "query". This state is modeled in Table \ref{tab:search-model}.
+
+
+\FloatBarrier
+\begin{table}[H]
+\centering
+\begin{tabular}{lll}
+Field & Type   & Description        \\ 
+\hline
+query & String & The search phrase 
+\end{tabular}
+\caption{Modeling the State: Search in E-mail Clients}
+\label{tab:search-model}
+\end{table}
+\FloatBarrier
