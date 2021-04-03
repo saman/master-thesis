@@ -1,21 +1,21 @@
-As mentioned DSL (Chapter \ref{ch:fundamentals}), After research and looking for suitable existing state modeling languages, it has been decided to create a new DSL based on run-time state migration requirements.
+After a research and looking for suitable existing state modeling languages, it has been decided to create a new light-weight DSL for data representation based on run-time state migration requirements.
 A DSL can be developed from scratch, or it can be a modification or a modified form of an existing domain-specific modeling language.
 
-The Application State Modeling Language (ASML) is a DSL that defines any software application state.
-The focus of this language is on modeling states of the run-time.
+The Application State Modeling Language (ASML) is a DSL that defines any type of software application state.
+The focus of this language is on modeling single types states of the run-time.
 
+As mentioned in requirements \textbf{D1 State Specification}, this language supports run-time states that are migratable.
 An application can have multiple states, and users can switch between them.
-These states and their transition can be modeled in different ways (e.g., UML state machine diagram), but as we deal with the data perspective and have to access to the actual values and migrate them, we need a structured language for defining states (e.g., Amazon States Language). But as the state’s actual data will be migrated not their transition, there is no need to include the transition between states in state specification, and each model can cover only an individual state. As mentioned in requirements \textbf{D1 State Specification}, this language supports states that are migratable.
-It is not supporting the transition between states as we assume we know in which state application is. 
+These states and their transition can be modeled in different ways (e.g., UML state machine diagram), but as we analyzed some applications in requirements (Chapter \ref{ch:requirements}), we deal with the data perspective of run-time states and have to access to the actual values and migrate them. Therefore, the run-time state’s actual data will be migrated not their transition. Moreover, there is no need to include the transition between states in state specification as we assume we know in which state application is. 
 
-The advantage of having an individual model for each state is improving interoperability, allowing different domain applications to share a specific part of them.
-For example, an e-mail domain application has a calendar that can migrate data with a phone calendar application.
+Each model can cover only an individual state. The advantage of having an individual model for each state is improving interoperability, allowing different domain applications to share a specific part of them.
+For example, an e-mail application may have a calendar that can migrate data with a phone calendar application.
 Also, there is no need to model the states which are not migratable. So, it reduces the time of modeling state and the amount models. 
 
-Figure \ref{fig:asml-overview} shows an overview of Application State Modeling Language (see \fcircone). The model in ASML is called Application State Model (see \fcirctwo), which is discussed in subchapter 5.2. There are some applications support the run-time state migration and have common Application State Models (see \fcircthree). The  actual values of a state on run-time is Run-Time State (see \fcircfour), which is discussed in subchapter 5.3.
+Figure \ref{fig:asml-overview} shows an overview of Application State Modeling Language (see \fcircone). The specification of a type of state using the ASML is called an Application State Model (see \fcirctwo), which is discussed in subchapter 5.2. There are some applications support the run-time state migration and have common Application State Models (see \fcircthree). The  actual values of a state on run-time is Run-Time State, which is discussed in subchapter 5.3.
 
 \FloatBarrier
-\begin{figure}
+\begin{figure}[H]
     \includegraphics[scale=0.8]{../figures/asml-overview.pdf}
     \centering
     \caption{Overview of Application State Modeling Language}
@@ -23,10 +23,10 @@ Figure \ref{fig:asml-overview} shows an overview of Application State Modeling L
 \end{figure}
 \FloatBarrier
 
-Considering three states which are modeled as “Sending E-mail Model”, “Search Model” and “New Event Model”. In this example, we have three applications which are K-9 Mail is an e-mail client on an Android phone, Mailspring is another e-mail client which also has calendar management on macOS, and Woven Calendar is a calendar application. K-9 Mail has two migratable run-time states, which are “Sending E-mail” and “Search". Mailpsring has three migratable states, which are “New Event", “Sending E-mail” and “Search". Waven has two migratable run-time states, which are “New Event” and “Search". As Mailpsring and Waven have a mutual “New Event” run-time state, they can share a common model: the “New Event Model". However, Mailspring has two other common run-time states which have common models with K9 Mail: the “Sending E-mail Model” and “Search Model". So, Mailspring and Woven can migrate actual run-time data of the “New Event” state. Furthermore, Mailspring and K-9 can migrate actual run-time data of the “Sending E-mail” state and the “Search” state. This shows the same model can be used for different applications.
+Considering three states which are modeled as \textit{Sending E-mail Model}, \textit{Search Model} and \textit{New Event Model}. In this example, we have three applications which are K-9 Mail is an e-mail client on an Android phone, Mailspring is another e-mail client which also has calendar management on macOS, and Woven Calendar is a calendar application. K-9 Mail has two migratable run-time states, which are \textit{Sending E-mail} and \textit{Search}. Mailpsring has three migratable states, which are \textit{New Event}, \textit{Sending E-mail} and \textit{Search}. Waven has two migratable run-time states, which are \textit{New Event} and \textit{Search}. As Mailpsring and Waven have a mutual \textit{New Event} run-time state, they can share a common model: the \textit{New Event Model}. However, Mailspring has two other common run-time states which have common models with K9 Mail: the \textit{Sending E-mail Model} and \textit{Search Model}. So, Mailspring and Woven can migrate actual run-time data of the \textit{New Event} state. Furthermore, Mailspring and K-9 can migrate actual run-time data of the \textit{Sending E-mail} state and the \textit{Search} state. This shows the same model can be used for different applications. The figure will be further explained in detail in the relevant sections.
 
 \subsection{Metamodel}
-Figure \ref{fig:asml-meta-model} shows the metamodel of our DSL as an UML class diagram. A Application State Model can describe one state. Each state specified in the Application State Model has a unique name. The extra information of a state is the version and author that can be defined in Number and String. Each state can have multiple values. Each value consists of a unique name and a type which can be a primitive type like Array, Object, Boolean, File, Number, and String. Also, a value can have some constraints like format, regex pattern, required and etc.
+Figure \ref{fig:asml-meta-model} shows the metamodel of our DSL as an UML class diagram. A Application State Model can describe one state. Each state specified in the Application State Model has a unique name, a description and some keywords. The extra information of a state is the version and author that can be defined in Number and String. Each state can have multiple values. Each value consists of a unique name and a type which can be a primitive type like Array, Object, Boolean, File, Number, and String. Also, a value can have some constraints like format, regex pattern, required and etc.
 
 \FloatBarrier
 \begin{figure}
@@ -89,12 +89,12 @@ properties:
 \subsection{Language Schema}
 The Application State Language itself is a JSON Schema document based on JSON Schema Draft-07
 \footnote{\href{https://json-schema.org/draft-07/json-schema-release-notes.html}{JSON Schema Draft-07 Release Notes}}
-and is following the same logic and syntax. Table \ref{tab:asml-schema} shows the schema of ASML. 
+and is following the same logic and syntax. Table \ref{tab:asml-schema} shows the the schema of ASML with its most important properties in a condensed form. 
 The full schema of ASML is available on its GitHub repository
 \footnote{\href{https://github.com/asml-lang/asml/blob/master/schemas/schema.json}{https://github.com/asml-lang/}}.
 
 \subsubsection{Mapping Metamodel to JSON Schema}
-The metamodel of ASML (Fig. \ref{fig:asml-meta-model}) is mapped in JSON Schema. The mapping document can be considered as a JSON Schema document which is a model. Therefore, each state should be defined in one JSON Schema document. Values of a state are mapped to \lstinline[basicstyle=\ttfamily]{properties} element of JSON Schema, in which each value should have a unique name as a key, and its data type can be defined as a key-value pair. An value’s content is mapped to an actual value in a JSON document, which is objects. The extra information like version and author’s contact are mapped to \lstinline[basicstyle=\ttfamily]{info} element.
+The metamodel of ASML (Fig. \ref{fig:asml-meta-model}) is mapped in JSON Schema. Therefore, each state should be defined in one JSON Schema document which is Application State Model. Each state should have a name, a description and keywords. Values of a state should be defined in \lstinline[basicstyle=\ttfamily]{properties} of JSON Schema, in which each value should be define as an object with a unique name as a key. The type of this value can be defined as a key-value pair inside value object, the key is "type" and its string value can be a primitive data type like number, string, boolean, and etc. Also, each value can have a description. The extra information like version and author’s contact are mapped to \lstinline[basicstyle=\ttfamily]{info} element. Moreover, each value can have some constrains like format, pattern and required that they can be defined inside value object. These constrains can be part of JSON Schema capabilities.
 
 \FloatBarrier
 \begin{table}[H]
