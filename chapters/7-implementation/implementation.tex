@@ -18,13 +18,13 @@ We installed Mosquitto on a VPS with Ubuntu 18.02 operating system to have a run
 Developers should derive interfaces from Application State Models. These interfaces must be written in the programming language of source and target applications. Developers should write a glue code to connect the source code of the existing application and use Application State Models' interfaces. These interfaces should be used as a type for a run-time state, and they guarantee these values. These interfaces can be written by developers or get generated with ASML CLI, a helper tool explained in 7.5.3.
 
 \section{Libraries}
-Two libraries are developed in two different popular programming languages, which are JavaScript and Java. These libraries are using the native API of their platform (Desktop and Android) to help developers implement run-time state migration. Each library is using a client library for MQTT Protocol to manage the communication with other devices. Developers must write some glue code to integrate libraries into existing applications.
+Two libraries are developed in two different popular programming languages, which are JavaScript and Java. These libraries are using the native API of their platform (Desktop and Android) to help developers implement run-time state migration. Each library is using a client library for MQTT Protocol to manage the communication with other devices. Developers must write some glue code to integrate libraries into existing applications. Figure \ref{fig:libraries-component} shows the component diagram of the library. The \textit{ASML Schema} is used by \textit{Validator} to validate a run-time state. The \textit{Library API} is the implementation of API Reference which can communicate with MQTT Library. The \textit{MQTT Library} can publish messages via \textit{Middleware}. Moreover, developers can write glue code and call methods of the library via \textit{Library API}.
 
 \FloatBarrier
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{../figures/libraries-diagram.pdf}
     \centering
-    \caption{The component diagram of a library}
+    \caption{The component diagram of the library}
     \label{fig:libraries-component}
 \end{figure}
 \FloatBarrier

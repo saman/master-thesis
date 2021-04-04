@@ -90,7 +90,8 @@
    \thispagestyle{empty}% no header and footer
    \vspace*{\stretch{1}}% some space at the top 
    \itshape             % the text is in italics
-   \raggedleft          % flush to the right margin
+%   \raggedleft          % flush to the right margin
+\centering
   }
   {\par % end the paragraph
    \vspace{\stretch{3}} % space at bottom is three times that at the top
