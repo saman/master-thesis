@@ -31,7 +31,7 @@ K-9 Mail is an open-source e-mail client application\footnote{\url{https://k9mai
 K-9 Mail written in Java 8. However, the new code base is migrating to Kotlin. The K-9 Mail project consist of different modules. The \textit{k9mail} which is the main module which includes code for database interaction, notification and activities. Another module is the \textit{k9mail-library} which is the back-end code for decoding emails and contacting mail providers. 
 
 \subsubsection{Adaptions}
-As we worked only only on the application, all adaptions are implemented in \textit{k9mail} module. The \textit{k9mail} consist of different packages. The integration of run-time state migration is implemented in \textit{ui} package.
+As we worked only only on the application, all adaptions are implemented in \textit{k9mail} module. The run-time state migration Android library has been added to this module as a dependency. The \textit{k9mail} consist of different packages. The integration of run-time state migration is implemented in \textit{ui} package.
 
 Adaptions are added to the fork of this project, hosted on GitHub\footnote{\url{https://github.com/asml-lang/k-9}}. 
 
@@ -80,7 +80,7 @@ Figure \ref{fig:adapt-compose} shows the compose window of Mailspring and K-9 Ma
 \end{figure}
 \FloatBarrier
 
-Figure \ref{fig:adapt-compose} shows the device modal of Mailspring and K-9 Mail which they have a migrate button.
+Figure \ref{fig:adapt-modal} shows the device modal of Mailspring and K-9 Mail which they have a migrate button.
 
 \FloatBarrier
 \begin{figure}[H]

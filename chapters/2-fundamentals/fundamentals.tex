@@ -1,0 +1,46 @@
+\chapter{Fundamentals}
+% \chapter{Fundamentals of Model-driven Software Engineering}
+\label{ch:fundamentals}
+In this chapter the fundamentals of Model-driven Software Engineering are discussed. Moreover, we stress on fundamentals of Domain-specific Language. We also define a category of application states.
+
+\section{Model-driven Software Engineering}
+The Model-driven software engineering (MDSE) methodology takes the premise that models, as crucial elements of understanding and sharing complex software, are a practical way of working and thinking by transforming them into first-class citizens in software engineering\cite{mdse}. Models are essentially an abstract representation of the software system to be built. They are referred to as the primary artifact that can be used to automatically create parts of a software system. \cite{mdse2011}
+
+\section{Domain-specific Language}
+The Domain-Specific Language (DSL) is a language that is designed exclusively for a certain application domain. The language deals with the concepts and features specific to that particular domain. \cite{dsl}.
+A DSL consist of the following main vital points. The notation by which users can write programs is specified in the \textit{concrete syntax}. This notation can be scripted, textual, visual, or a combination of these. A data structure containing semantically related information conveyed by a program is known as \textit{abstract syntax}. It is devoid of any knowledge about the notation. In addition to structurally sound in terms of concrete and abstract syntax, a language's \textit{static semantics} is the collection of constraints and/or type system rules that programs must follow. The interpretation of a program after it has been executed is referred to as \textit{execution semantics} \cite{dsl-eng}.
+
+The meta model of a model is a model that defines the abstract syntax of a language used to describe a model. The meta prefix can be interpreted as \textit{the definition of}. This model represents an \textit{instance of} the meta model.. It should be mentioned that meta model itself also is a model \cite{dsl-eng}.
+
+
+
+\section{Application State Space}
+All possible combinations of an application are represented in a state space. Abstractions of state space are useful when we want to comprehend the behavior of a given system. A state variable represents a particular state of the application; the values of all state variables describes the state of the application. This means each point in the state space represents one state of the application \cite{state-space}. In this thesis, we categorized application states as follows.
+
+\paragraph{Run-time State}
+In an application, variables represent the storage locations in the computer's memory that the computer uses to hold data stored. The run-time state of an application is the content of these memory locations at any point in its execution \cite{Laplante2000-ui}. For example, the value of a search input.
+
+\paragraph{Persistent State}
+A state that persists more than its process of creation is said to be a persistent state of an application. In practice, the state is maintained by storing it as data in the computer's data storage \cite{pstate}. For example, the settings of the browser .
+
+
+\paragraph{Action State}
+When application is doing a process; it is on a action state. For example, a browser is printing a page.
+
+\section{JSON}
+JSON (JavaScript Object Notation) is a file format. It is lightweight and human-readable text to store and transmit data based on the data types of the JavaScript programming language \cite{json}. In the last few years, many programming languages support JSON, which gained popularity among developers, and has become the primary data format for exchanging information. JSON documents consist of key-value pairs, in which the value can be again a JSON document. Objects are key-value pairs. Each key is a string and denotes a property of the object. The value can be of a primitive data type (number, string, boolean, and etc.), it can be an array of values or again an object and there is no limit of the nesting level \cite{json-schema}. 
+
+A simple JSON documents is shown in Listing \ref{lis:json}.
+
+\FloatBarrier
+\begin{code}
+\begin{json}
+{
+    "fullname": "John Doe",
+    "email": "john@mail.upb.de"
+}
+\end{json}
+\caption{A simple JSON document.}
+\label{lis:json}
+\end{code}
+\FloatBarrier

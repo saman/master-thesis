@@ -33,7 +33,7 @@ Two libraries are developed in two different popular programming languages, whic
 In the following, the reference API for the library is provided. This reference API is support by the two existing implementation for JavaScript and Java. Also, if other developers want to support other programming languages, they can follow this API Reference. 
 
 \subsubsection{addModel}
-Each Application State Model must be added to the library. This method allows developers to add an Application State Model's support by adding its interface as an input parameter.
+Each Application State Model must be added to the library. This method allows developers to add a valid Application State Model's support by adding its interface as an input parameter.
 
 \subsubsection{getModel}
 This method allows retrieving the added Application State Model by its name.
@@ -42,7 +42,7 @@ This method allows retrieving the added Application State Model by its name.
 This method allows retrieving all Application State Models that the device is supporting. 
 
 \subsubsection{introduce}
-An application should introduce itself to other applications on the network via middleware. In this method, configuration parameters must be provided. These parameters are device identification, device and application name, middleware IP address, and a value that shows if it is a new device. The library should generate a unique device identification like UUID. This method subscribes the device to the online topic, and all topics of supported Application State Models, then publish configuration parameters as a message in JSON format via MQTT Protocol to corresponding topics. The middleware forwards the message to all devices that support the same Application State Model. All recipients of a introduction message should add the new device to their devices list. Also, they responds with a introduction message but only to the new device. Thereby, the new device adds other devices to the devices list. For instance, Application State Models, which Mailspring supports, are \textit{search} and \textit{sending-email}. Also, K-9 Mail supports \textit{search} and \textit{sending-email} as well. Listing \ref{lis:api-introduction-source} shows the introduction of Mailspring published to all devices which support \textit{search} and \textit{sending-email}.
+An application should introduce itself to other applications on the network via middleware. In this method, configuration parameters must be provided. These parameters are device identification, device and application name, middleware IP address, and a value that shows if it is a new device. The library should generate a unique device identification like UUID. This method subscribes the device to the online topic, and all topics of supported Application State Models, then publish configuration parameters as a message in JSON format via MQTT Protocol to corresponding topics. The middleware forwards the message to all devices that support the same Application State Model. A callback \textit{onDeviceJoin} which explained in 7.3.2, will be called on all recipients of a introduction message and they should add the new device to their devices list. Also, they responds with a introduction message but only to the new device. Thereby, the new device adds other devices to the devices list. For instance, Application State Models, which Mailspring supports, are \textit{search} and \textit{sending-email}. Also, K-9 Mail supports \textit{search} and \textit{sending-email} as well. Listing \ref{lis:api-introduction-source} shows the introduction of Mailspring published to all devices which support \textit{search} and \textit{sending-email}.
 
 As each application and platform has different life cycle and entry points, calling this method is part of the glue code and needs to be coupled with the application. So, when an application starts, this method should be called.
 
@@ -65,7 +65,7 @@ As each application and platform has different life cycle and entry points, call
    }
 }
 \end{json}
-\caption{The source device introduction message.}
+\caption{The device introduction message.}
 \label{lis:api-introduction-source}
 \end{code}
 \FloatBarrier
@@ -92,7 +92,7 @@ Also, Listing \ref{lis:api-introduction-target} shows K-9 Mail introduction resp
    }
 }
 \end{json}
-\caption{The target device introduction respond message.}
+\caption{The device introduction respond message.}
 \label{lis:api-introduction-target}
 \end{code}
 \FloatBarrier
@@ -220,8 +220,15 @@ This method allows the target device to notify the source device about finalizin
 \end{code}
 \FloatBarrier
 
+\subsubsection{onMessage}
+This method should be called on applications which receive a message from middleware. This method is responsible of message process and filtering and calling a corresponding callback. For instance, when a device receive a message with \mintinline{json}{{"action": "response-state"}} (Figure \ref{lis:api-sendstate}), this method calls the \textit{onStateReceive} callback, which explained in 7.3.2.
+
+
+\subsubsection{onOnline}
+This method should be called on applications which receive a message about connectivity status of other devices from middleware. This method process the online status. If the a device goes offline, this method calls \textit{onDeviceLeave} callback, which explained in 7.3.2.
+
 \subsection{Callback Events}
-Devices should get a notice when they received a message via middleware. The library is responsible for the process of selecting messages for reception and processing them. There should be callback events that allow developers to implement a proper behavior. This implementation is part of the glue code.
+Devices should get a notice when they received a message via middleware. The library is responsible for the process of selecting messages for reception and processing them by \textit{onMessage} method. There should be callback events that allow developers to implement a proper behavior. This implementation is part of the glue code.
 
 \subsubsection{onStateRequest}
 This event should be called on the target application when the source application requests a run-time state via \textit{getStateDevice} method.
