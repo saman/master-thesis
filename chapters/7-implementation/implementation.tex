@@ -102,7 +102,9 @@ Also, Listing \ref{lis:api-introduction-target} shows K-9 Mail introduction resp
 This method allows fetching the configuration parameters of the current device. These parameters should set by the introduction method.
 
 \subsubsection{setState}
-This method allows storing the current run-time state in the library. If a  device requests a run-time state, it is ready to get migrated. 
+Developers needs to extract the run-time state and adjusted it to corresponding interface.
+To keep track of run-time time state and extract it, different events might occurs on changing a run-time state on different programming languages (e.g onClick or onChange).
+This method allows developers store the current run-time state after adjustment in the library. If a device requests a run-time state, it is ready to get migrated. 
 
 \subsubsection{setHasState}
 A device must have a run-time state to migrate. This method notifies other devices about having a run-time state for a particular Application State Model. This method sends a message in JSON format via MQTT Procotol to all supported Application State Models topics and inform them whether this device has a state or not. Other devices should add or remove this device in the list of their devices based on the value in the message. For instance, as mentioned before Mailspring supports \textit{search} and \textit{sending-email}, Listing \ref{lis:api-sethasstate} shows Mailpsring publish a message to corresponding topics.
