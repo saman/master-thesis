@@ -17,7 +17,7 @@ K9-Mail Android application is developed in Java; therefore, it requires the And
 \subsection{Mailspring}
 Mailspring is an open-source e-mail client application\footnote{\url{https://getmailspring.com/}}. The source code of this application is available on GitHub\footnote{\url{https://github.com/Foundry376/Mailspring}}. This application can be installed on desktop operating systems like macOS, Linux, and Windows.
 \subsubsection{Architecture}
-As Mailspring is written in TypeScript and is based on Electron, the process that runs package.json's main script is called the main process. The main process's script can display a UI by generating web pages. An Electron app has only one main process. Also, Electron has another type of process, which is the renderer process, and each web page runs in its own renderer process. Electron provides a special API for communication of main process and renderer processes \cite{electron}. Furthermore, Mailspring's UI is developed in ReactJS, which is a JavaScript UI library. Each part of the UI is a ReactJS component.
+Because Mailspring is written in TypeScript and has been built on top of Electron, its main script, which runs on package.json, is referred to as the main process. The main process's script can display a UI by generating web pages. Only one main process is involved in an Electron application. Also, Electron has another type of process, which is the renderer process, and each web page runs in its own renderer process. Electron provides a special API for communication of main process and renderer processes \cite{electron}. Furthermore, Mailspring's UI is developed in ReactJS, which is a JavaScript UI library. Each part of the UI is a ReactJS component.
 
 \subsubsection{Adaptions}
 The run-time state migration JavaScript library and Application State Models interfaces are integrated into the main process's script. On the other hand, all UI adaptions are in ReactJS components. 
@@ -28,10 +28,10 @@ Adaptions are added to the fork of this project, hosted on GitHub\footnote{\url{
 K-9 Mail is an open-source e-mail client application\footnote{\url{https://k9mail.app/}}. The source code of this application is available on GitHub\footnote{\url{https://github.com/k9mail/k-9}}. This application can be installed on Android devices.
 
 \subsubsection{Architecture}
-K-9 Mail written in Java 8. However, the new code base is migrating to Kotlin. The K-9 Mail project consist of different modules. The \textit{k9mail} which is the main module which includes code for database interaction, notification and activities. Another module is the \textit{k9mail-library} which is the back-end code for decoding emails and contacting mail providers. 
+K-9 Mail is written in Java 8. However, the new code base is migrating to Kotlin. The K-9 Mail project consists of different modules. The \textit{k9mail} is the main module that includes code for database interaction, notification, and activities. Another module is the \textit{k9mail-library} which is the back-end code for decoding e-mails and contacting mail providers. 
 
 \subsubsection{Adaptions}
-As we worked only only on the application, all adaptions are implemented in \textit{k9mail} module. The run-time state migration Android library has been added to this module as a dependency. The \textit{k9mail} consist of different packages. The integration of run-time state migration is implemented in \textit{ui} package.
+As we worked only on the application, all changes are implemented in \textit{k9mail} module. The run-time state migration Android library has been added to this module as a dependency. The \textit{k9mail} consist of different packages. The integration of run-time state migration is implemented in \textit{ui} package.
 
 Adaptions are added to the fork of this project, hosted on GitHub\footnote{\url{https://github.com/asml-lang/k-9}}. 
 
@@ -40,22 +40,22 @@ Adaptions are added to the fork of this project, hosted on GitHub\footnote{\url{
 In this section, we explain all implemented UI adaptions in both applications to achieve a proper behavior of run-time state migration. 
 
 \subsubsection{Notifications}
-When a device joins or leaves, other devices which are subscribe to the same Application State Model's topic will be notified by \textit{onDeviceJoin} and \textit{onDeviceLeave} callbacks. Devices who gets this message show a native notification on their application and inform the user about connectivity status of the device.
+When a device joins or leaves, other devices which are subscribed to the same Application State Model's topic will be notified by \textit{onDeviceJoin} and \textit{onDeviceLeave} callbacks. Devices that gets this message show a native notification on their application and inform the user about the connectivity status of the device.
 
 \subsubsection{Run-time State Migration Button}
-For each view of a state, we developed a floating action button as the main button of run-time state migration. When the user click on this button, applications displays two other buttons as \textit{Set State} for push method and \textit{Get State} for the pull method. The user can start the migration process by clicking one of this button on the current run-time state.
+For each view of a state, we developed a floating action button as the main button of run-time state migration. When the user clicks on this button, applications display two other buttons as \textit{Set State} for push method and \textit{Get State} for the pull method. The user can start the migration process by clicking one of these buttons on the current run-time state.
 
 \subsubsection{Device List Modal}
-When the user clicks on run-time state migration button and clicks on one of migration methods' buttons, applications shows a modal window. This modal window displays the name of the current run-time state, migration method and the list of the devices that are available for migration by \textit{getDevices}. The user should select a device from the list and click on the \textit{migrate} button. By clicking on the \textit{migrate} button, If the chosen method is push, the run-time state can be migrated by \textit{sendState}. Otherwise, for the pull method, the run-time state can be requested by \textit{getStateDevice}. At the end the modal window get closed. 
+When the user clicks on the run-time state migration button and clicks on one of the migration methods' buttons, applications show a modal window. This modal window displays the name of the current run-time state, migration method, and the list of the devices available for migration by \textit{getDevices}. The user should select a device from the list and click on the \textit{migrate} button. By clicking on the \textit{migrate} button, If the chosen method is push, the run-time state can be migrated by \textit{sendState}. Otherwise, for the pull method, the run-time state can be requested by \textit{getStateDevice}. In the end, the modal window gets closed. 
 
 \subsubsection{Run-time State Adjustments}
-We adjust both applications for both \textit{search} and \textit{sending-email} states. If the target device gets a new run-time state by \textit{onStateReceive}, application react responsively. For \textit{search} state, the input of the query text gets updated with the source application's query text. Also, if the search is already submitted on the source application, the target device also tries to submit the query text and shows a result. Moreover, for \textit{sending-email} state, if the target device gets a new run-time state by push method, it displays the new draft on a new compose window. Also, user can click on the run-time state migration button on the compose window and pull and push the run-time state of the current window. After adjustment, the target device announce the end of migration with \textit{setMigration} to the source device.
+We adjust both applications for both \textit{search} and \textit{sending-email} states. If the target device gets a new run-time state by \textit{onStateReceive}, application react responsively. For \textit{search} state, the input of the query text gets updated with the source application's query text. Moreover, if the search is already submitted on the source application, the target device also tries to submit the query text and shows a result. Moreover, for \textit{sending-email} state, if the target device gets a new run-time state by push method, it displays the new draft on a new compose window. Also, the user can click on the run-time state migration button on the compose window and pull and push the run-time state of the current window. After adjustment, the target device announces the end of migration with \textit{setMigration} to the source device.
 
 \subsubsection{Removing Run-time State}
-When a device gets \textit{onStateMigration}, application resets all input of the corresponding run-time state. For \textit{search} state, in query text input will be empty and the list of result will be reset. For \textit{sending-email}, the current compose window will be closed.
+When a device gets \textit{onStateMigration}, application resets all input of the corresponding run-time state. For \textit{search} state, in query text input will be empty, and the list of results will be reset. For \textit{sending-email}, the current compose window will be closed.
 
 \subsubsection{UI Screenshots}
-In this section we demonstrate UI adjustments in example applications.
+In this section, we demonstrate UI adjustments in example applications.
 
 Figure \ref{fig:adapt-noti} shows a run-time state migration button which belongs to \textit{search} state. Also, this figure displays notifications for joining K-9 Mail and Mailspring by sharing the \textit{search} state.
 
@@ -69,7 +69,7 @@ Figure \ref{fig:adapt-noti} shows a run-time state migration button which belong
 \end{figure}
 \FloatBarrier
 
-Figure \ref{fig:adapt-compose} shows the compose window of Mailspring and K-9 Mail which they have a run-time state migration button.
+Figure \ref{fig:adapt-compose} shows the compose window of Mailspring and K-9 Mail which have a run-time state migration button.
 
 \FloatBarrier
 \begin{figure}[H]
@@ -80,7 +80,7 @@ Figure \ref{fig:adapt-compose} shows the compose window of Mailspring and K-9 Ma
 \end{figure}
 \FloatBarrier
 
-Figure \ref{fig:adapt-modal} shows the device modal of Mailspring and K-9 Mail which they have a migrate button.
+Figure \ref{fig:adapt-modal} shows the device modal of Mailspring and K-9 Mail which have a migrate button.
 
 \FloatBarrier
 \begin{figure}[H]
