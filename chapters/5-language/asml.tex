@@ -6,7 +6,8 @@ The focus of this language is on modeling single types states of the run-time.
 
 As mentioned in requirements \textbf{D1 State Specification}, this language supports run-time states that are migratable.
 An application can have multiple states, and users can switch between them.
-These states and their transition can be modeled in different ways (e.g., UML state machine diagram), but as we analyzed some applications in requirements (Chapter \ref{ch:requirements}), we deal with the data perspective of run-time states and have to access to the actual values and migrate them. Therefore, the run-time state’s actual data will be migrated not their transition. Moreover, there is no need to include the transition between states in state specification as we assume we know in which state application is. 
+These states and their transition can be modeled in different ways (e.g., UML state machine diagram), but as we analyzed some applications in requirements (Chapter \ref{ch:requirements}), we deal with the data perspective of run-time states and have to access to the actual values and migrate them. Therefore, the run-time state’s actual data will be migrated not their transition. For example, Amazon States Language considers the state transition as some tasks that need to be done step by step.
+Moreover, there is no need to include the transition between states in state specification as we assume we know in which state application is. 
 
 Each model can cover only an individual state. The advantage of having an individual model for each state is improving interoperability, allowing different domain applications to share a specific part of them.
 For example, an e-mail application may have a calendar that can migrate data with a phone calendar application.
@@ -26,7 +27,7 @@ Figure \ref{fig:asml-overview} shows an overview of Application State Modeling L
 Considering three states which are modeled as \textit{Sending E-mail Model}, \textit{Search Model} and \textit{New Event Model}. In this example, we have three applications which are K-9 Mail is an e-mail client on an Android phone, Mailspring is another e-mail client which also has calendar management on macOS, and Woven Calendar is a calendar application. K-9 Mail has two migratable run-time states, which are \textit{Sending E-mail} and \textit{Search}. Mailpsring has three migratable states, which are \textit{New Event}, \textit{Sending E-mail} and \textit{Search}. Waven has two migratable run-time states, which are \textit{New Event} and \textit{Search}. As Mailpsring and Waven have a mutual \textit{New Event} run-time state, they can share a common model: the \textit{New Event Model}. However, Mailspring has two other common run-time states which have common models with K9 Mail: the \textit{Sending E-mail Model} and \textit{Search Model}. So, Mailspring and Woven can migrate actual run-time data of the \textit{New Event} state. Furthermore, Mailspring and K-9 can migrate actual run-time data of the \textit{Sending E-mail} state and the \textit{Search} state. This shows the same model can be used for different applications. The figure will be further explained in detail in the relevant sections.
 
 \subsection{Metamodel}
-Figure \ref{fig:asml-meta-model} shows the metamodel of our DSL as an UML class diagram. A Application State Model can describe one state. Each state specified in the Application State Model has a unique name, a description and some keywords. The extra information of a state is the version and author that can be defined in Number and String. Each state can have multiple values. Each value consists of a unique name and a type which can be a primitive type like Array, Object, Boolean, File, Number, and String. Also, a value can have some constraints like format, regex pattern, required and etc.
+Figure \ref{fig:asml-meta-model} shows the metamodel of our DSL as an UML class diagram. An Application State Model can describe one state. Each state specified in the Application State Model has a unique name, a description and some keywords. The extra information of a state is the version and author that can be defined in Number and String. Each state can have multiple values. Each value consists of a unique name and a type which can be a primitive type like Array, Object, Boolean, File, Number, and String. Also, a value can have some constraints like format, regex pattern, required and etc.
 
 \FloatBarrier
 \begin{figure}
@@ -39,52 +40,6 @@ Figure \ref{fig:asml-meta-model} shows the metamodel of our DSL as an UML class 
 
 \subsection{Language Stack}
 There are many ways to define a DSL; it can be made from scratch (e.g., developing a language base on Xtext framework) or extended or restricted versions of other languages. The ASML is an extended version of JSON Schema. 
-
-
-\subsubsection{JSON Schema}
-After the tremendous popularity of JSON, some scenarios could benefit from a declarative way of defining a schema for JSON documents.
-A declarative schema specification would give programming languages and developers a standardized language to specify what types of JSON documents are valid as inputs and outputs \cite{json-schema}.
-
-The schema can be another JSON document that defines acceptable key-value pairs.
-For instance, the simple JSON document in Listing \ref{lis:json}, can be declare in JSON Schema document in Listing \ref{lis:json-schema}
-
-\FloatBarrier
-\begin{code}
-\begin{json}
-{
-    "properties": {
-        "fullname": {
-            "type": "string"
-        },
-        "email": {
-            "type": "string",
-            "format": "email"
-        }
-    }
-}
-\end{json}
-\caption{A simple JSON Schema document}
-\label{lis:json-schema}
-\end{code}
-\FloatBarrier
-
-JSON Schema can define a document must have several , including regular data-types like objects, arrays, strings, booleans, numbers and, null. Each of these types has different keywords that help to specify and restrict the schema. The most important attribute is “type” whose value is defining the schema. Constraints can be applied on an instance by adding validation keywords to the schema \cite{json-model}. For example in Listing \ref{lis:json-schema}, \lstinline[basicstyle=\ttfamily]|{"type": "string"}| specify a value with string type.
-
-We use YAML syntax to represent the Application State Model in JSON Schema in this thesis for readability reasons. YAML is a human-readable syntax and can be converted to JSON syntax without extra configuration. Listing \ref{lis:yaml-simple} shows a simple example based on Listing \ref{lis:json-schema} which is a JSON Schema document.
-
-
-\lstset{
-  label=lis:yaml-simple, caption=Example of expressing JSON Schema in YAML syntax., 
-}
-\begin{lstlisting}[language=yaml]
-properties:
-  fullname:
-    type: string
-  email:
-    type: string
-    format: email
-\end{lstlisting}
-
 
 \subsection{Language Schema}
 The Application State Language itself is a JSON Schema document based on JSON Schema Draft-07

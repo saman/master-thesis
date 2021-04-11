@@ -5,11 +5,13 @@ In this chapter, the architectural overview of the run-time state migration appr
 \section{Publish–subscribe pattern}
 An infrastructure is needed to exchange run-time states of applications across different devices. Also, devices should know which other devices with common Application State Models are available and notice if they join or leave the network. Moreover, devices should be able to migrate the run-time state and acknowledge other devices when migration is done.
 
-In this approach, we chose to use the publish-subscribe pattern. Thereby, the middleware is the message broker, devices are publishers and subscribers, Application State Models are topics, and run-time states are messages. Also, there are extra topics and messages that allow us to fulfil requirements such as device introduction, device connectivity and finalizing the run-time state migration. Figure \ref{fig:publish–subscribe} shows an overview of publish–subscribe pattern in our approach.
+In this approach, we chose to use the publish-subscribe pattern. Thereby, the middleware is the message broker, devices are publishers and subscribers, Application State Models are topics, and run-time states are messages. Also, there are extra topics and messages that allow us to fulfil requirements such as device introduction, device connectivity and finalizing the run-time state migration.
+
+Figure \ref{fig:publish–subscribe} illustrates an overview of publish–subscribe pattern in our approach. A Mac device (see \fcircone) subscribes to \textit{Model-A} and \textit{Model-B} topics, a Windows device (see \fcirctwo) subscribes to \textit{Model-A} topic and an Android device (see \fcircthree) subscribes to \textit{Model-B} topic. The Mac device publishes a message contain \textit{"X"} to topic \textit{Model-A}, and the middleware makes sure it gets forwarded to the Windows device. Also, a message containing \textit{"Y"} is published from the Mac device to the topic \textit{Model-B} and forwarded to the Android device by the middleware.
 
 \vspace{10mm}
 \FloatBarrier \begin{figure}[H]
-    \includegraphics[width=0.5\textwidth]{../figures/publish-subscribe.pdf}
+    \includegraphics[width=0.8\textwidth]{../figures/publish-subscribe.pdf}
     \centering
     \caption{Overview of Publish–subscribe pattern in our approach.}
     \label{fig:publish–subscribe}
