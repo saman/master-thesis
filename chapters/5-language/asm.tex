@@ -1,14 +1,14 @@
 
-The Application State Model is a custom JSON Schema document that defines what a state must contain at run-time and is validated against Application State Modeling Language. To enable run-time state migration, developers should write a custom Application State Model or use an existing one. In contrast to a regular JSON schema, the Application State Model has to have the fields defined by the ASML.
+The Application State Model is a custom JSON Schema document that defines what a state must contain at run-time and is validated against Application State Modeling Language. To enable run-time state migration, developers should write a custom Application State Model or use an existing one. In contrast to a regular JSON schema, the Application State Model must have the fields defined by the ASML.
 
 Any application has different states; Each state should have its own model, which is a JSON Schema document. At the time of integration, Application State Models must be coupled with the source and target applications to determine which states are available for migration.
 
-For migration to happen, source and target applications must have a common Application State Model. As each state is modeled individually, different domain application with the same-purpose part can migrate their states. For example, an e-mail client may have a to-do list feature which can be a standard characteristic for a task management application. So, they have some common states like writing a task and searching.
+For migration to happen, source and target applications must have a common Application State Model. As each state is modeled individually, different domain application with the same-purpose part can migrate their states. For example, an e-mail client may have a to-do list feature which can be a standard characteristic for a task management application. So, they may have some common states like writing a task or search.
 
-Developers can write their own Application State Model or using the existing ones. Variables of a run-time state that need to be migrated shall be identified and associated to keywords. Developers can look into the Model Repository (explained in 6.5) and search for these keywords to find a suitable model for their application. They may use an existing one or even extending it by making a new model. To write a new model, variables of a run-time state which they are associated to some keywords should be specified by their name, type or their format. For example, when a search state needs to be migrated, we need to migrate a text and maybe the submission status. These variables can be associate with some keywords like "query" as a string and "submit" as a boolean. These associated keywords and their type must be specified in \lstinline[basicstyle=\ttfamily]{properties} section of Application State Model which is described in next section. 
+Developers can write their own Application State Model or using the existing ones. Variables of a run-time state that need to be migrated shall be identified and associated to keywords. Developers can look into the Model Repository (explained in 6.5) and search for these keywords to find a suitable model for their application. They may use an existing one or even extending it by making a new model. To write a new model, variables of a run-time state which they are associated to some phrases, should be specified by their name, type or their format. For example, when a search state needs to be migrated, we need to migrate a text and maybe the submission status. These variables can be associate with some phrases like “query” as a string and “submit” as a boolean. These associated phrases and their type must be specified in \lstinline[basicstyle=\ttfamily]{properties} section of Application State Model which is described in next section. 
 
 \subsection{Top-level Fields}
-There are some fields that they need to be in an Application State Model to define a state’s specification.
+There are some fields that they need to be in an Application State Model to define a state specification.
 
 \subsubsection{asml}
 As stated in requirement \textbf{D3 Validating}, a model must have an object field named “asml” whose string value represents the version of ASML. This version follows SemVer pattern \footnote{\url{https://semver.org/}} and helps to validate the model against the correct version of our DSL. Listing \ref{lis:asm-asml} shows how the “asml” field has to be defined. The version of ASML in this Application State Model is “1.0.0”.
@@ -26,22 +26,23 @@ As stated in requirement \textbf{D2 Finding Same Model}, a model must have an ob
   label=lis:asm-info, caption=Application State Model “info” field example. 
 }
 \begin{lstlisting}[language=yaml]
-title: sending-email
-description: A schema model for sending an email
-version: 1.0.0
-keywords:
-- email
-- e-mail
-- compose
-contact:
-  name: Saman Soltani
-  email: saman@mail.upb.de
-  url: samansoltani.com
-
+asml: 1.0.0
+info:
+  title: sending-email
+  description: A schema model for run-time state migration of sending an email
+  version: 1.0.0
+  keywords:
+  - email
+  - e-mail
+  - compose  
+  contact:
+    name: Saman Soltani
+    email: saman@mail.upb.de
+    url: samansoltani.com
 \end{lstlisting}
 
 \subsubsection{properties}
-A model must have an object field named “properties” whose object value represents a state’s specification. Based on ASML, any element of the “properties” object is considered a variable that can be migrated.
+A model must have an object field named “properties” whose object value represents a state specification. Based on ASML, any element of the “properties” object is considered a variable that can be migrated.
 Listing \ref{lis:asm-properties} shows an example that has four fields with different types such as from, to, subject and body. These fields should be in the state.
 
 \lstset{
@@ -81,7 +82,7 @@ required:
 \subsection{Example Models}
 \subsubsection{Composing New E-mail}
 Considering an e-mail client application in which the user can write an e-mail. The state of composing a new e-mail can have a minimum of four fields which are “from”, “to”, “subject” and “body”. A combination of Listings \ref{lis:asm-asml},  \ref{lis:asm-info},  \ref{lis:asm-properties} and  \ref{lis:asm-required} shows an example of this model.
-The complete version of the Application State Model of composing a new e-mail is shown in Listing \ref{lis:sending-email-schema}.
+The complete version of the Application State Model of composing a new e-mail is shown in  Listing \ref{lis:sending-email-schema} which is in appendixes.
 \subsubsection{Writing Note}
 Considering a note-taking application that has only one state for migration which is writing a note. It can be modeled with a compulsory “text” string field as in Listing \ref{lis:note-schema}.
 
@@ -102,7 +103,7 @@ required:
 
 \end{lstlisting}
 \subsubsection{Search}
-Searching between data is very common between applications. If there would a search feature; Also, there is a search result. The search state can be modeled so that the application knows if the search has been submitted by the user or not; it can adjust itself base on a received state. The search model can have a compulsory “query” string field, which defines the text that the user is looking for, and a “submit” boolean field shows if the search has been submitted.
+Searching between data is very common between applications. Suppose an application includes a search function. It also provides a result for searches. The search state can be modeled so that the application knows if the search has been submitted by the user or not; it can adjust itself base on a received state. The search model can have a compulsory “query” string field, which defines the text that the user is looking for, and a “submit” boolean field shows if the search has been submitted.
 
 This Application State Model can be used in different purpose applications which they have the search feature. Listing \ref{lis:search-schema} shows a search state modeled defined as Application State Model in a JSON Schema document.
 

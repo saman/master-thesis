@@ -1,7 +1,7 @@
 \chapter{Fundamentals}
 % \chapter{Fundamentals of Model-driven Software Engineering}
 \label{ch:fundamentals}
-In this chapter, the fundamentals of Model-driven Software Engineering are discussed. Moreover, we stress on fundamentals of Domain-specific Language and some DSL examples. Since this thesis focus on the migration of run-time states, we also give a categorization of applications states. Furthermore, as we use JSON to define our DSL, we discuss about JSON and JSON Schema.
+In this chapter, the fundamentals of Model-driven Software Engineering are discussed. Moreover, we stress on fundamentals of Domain-specific Language and some DSL examples. Since this thesis focus on the migration of run-time states, we also give a categorization of applications states. Furthermore, as we use JSON in defining our DSL, we discuss about JSON and JSON Schema.
 
 \section{Model-driven Software Engineering}
 The Model-driven software engineering (MDSE) methodology takes the premise that models, as crucial elements of understanding and sharing complex software, are a practical way of working and thinking by transforming them into first-class citizens in software engineering. The purpose of a model can be anything from communication between people to the ability to develop a piece of software. The actual needs that they will address will determine how a model is defined and managed. \cite{mdse}. 
@@ -28,7 +28,7 @@ Following are the most vital points in a DSL. The notation by which users can wr
 The metamodel of a model is a model that defines the abstract syntax of a language used to describe a model. 
 \end{definition}
 
-In metamodel, the meta prefix can be interpreted as \textit{the definition of}. This model represents an \textit{instance of} the metamodel. It should be mentioned that metamodel itself also is a model.
+In metamodel, the meta prefix can be interpreted as \textit{the definition of}. A model represents an \textit{instance of} the metamodel. It should be mentioned that metamodel itself also is a model.
 
 \subsection{Define a DSL}
 Designing DSLs accordingly requires careful attention to detail to meet requirements. Essentially, the main concern of DSL design consists of implementing concrete syntax and abstract syntax \cite{engineering_modeling_languages}.
@@ -56,7 +56,7 @@ There are some steps that they have to be considered for creating a DSL \cite{md
 This section discusses two existing textual DSLs.
 
 \subsubsection{Amazon States Language}
-This language is a specification for state machines. These state machines are a collection of states that perform tasks. This specification allows the state machine to determine the transition to other states and stop the execution. These languages are used within the Amazon Web Services infrastructure, and they use lambda functions to execute tasks \cite{amazonwebservices}. Listing \ref{lis:asl} shows an simple example of Amazon States Language, which contains two states and starts from \textit{HelloWorld} state and have transition to \textit{NextState} and finishes there.
+This language is a JSON-based specification for state machines. These state machines are a collection of states that perform tasks. This specification allows the state machine to determine the transition to other states and stop the execution. This language is used within the Amazon Web Services infrastructure, and it use lambda functions to execute tasks \cite{amazonwebservices}. Listing \ref{lis:asl} shows an simple example of Amazon States Language, which contains two states and starts from \textit{HelloWorld} state and have transition to \textit{NextState} and finishes there.
 
 \FloatBarrier
 \begin{code}
@@ -127,17 +127,17 @@ deactivate B
 All possible combinations of an application are represented in a state space. Abstractions of state space are helpful when we want to comprehend the behavior of a given system. A state variable represents a particular state of the application; the values of all state variables describe the state of the application. This means each point in the state space represents one state of the application \cite{state-space}. The application states of existing applications are categorized in this thesis in order to identify those that can be migrated.
 
 \paragraph{Persistent State}
-A state that exist longer than a single execution of the program is considered to be a persistent state. In practice, the state is maintained by storing it as data in the computer's data storage \cite{pstate}. For example, the settings of the browser.
+A state that exist longer than a single execution of the program is considered to be a persistent state. In practice, the state is maintained by storing it as data in the computer's data storage \cite{pstate}. For example, the settings of a web browser.
 
 
 \paragraph{Action State}
-A running application will frequently alter the run-time state due to processing, which is called an action state. For example, a browser is printing a page.
+A running application will frequently alter the run-time state due to processing, which is called an action state. For example, a web browser is printing a page.
 
 \paragraph{Run-time State}
 In an application, variables represent the storage locations in the computer's memory that the computer uses to hold data stored. The run-time state of an application is the content of these memory locations at any point in its execution \cite{Laplante2000-ui}. For example, the value of a search input. In this thesis, the focus is on supporting the migration of such states.
 
 \section{JSON}
-JSON (JavaScript Object Notation) is a file format. It is lightweight and human-readable text to store and transmit data based on the data types of the JavaScript programming language \cite{json}. In the last few years, many programming languages support JSON, which gained popularity among developers, and has become the primary data format for exchanging information. JSON documents consist of key-value pairs, in which the value can be again a JSON object. Objects are key-value pairs. Each key is a string and denotes a property of the object. The value can be of a primitive data type (number, string, boolean, etc.), it can be an array of values or again an object, and there is no limit to the nesting level \cite{json-schema}. 
+JSON (JavaScript Object Notation) is a file format. It is a lightweight and human-readable text to store and transmit data based on the data types of the JavaScript programming language \cite{json}. In the last few years, many programming languages support JSON, which gained popularity among developers, and has become the primary data format for exchanging information. JSON documents consist of key-value pairs, in which the value can be again a JSON object. Objects are key-value pairs. Each key is a string and denotes a property of the object. The value can be of a primitive data type (number, string, boolean, etc.), it can be an array of values or again an object, and there is no limit to the nesting level \cite{json-schema}. 
 
 A simple JSON document is shown in Listing \ref{lis:json} which \textit{fullname} and \textit{email} are keys and \textit{"John Doe"} and \textit{"john@mail.upb.de"} are their string values. Moreover, \textit{info} is an object containing another key that is \textit{hobbies} contains an array value.
 
@@ -194,7 +194,7 @@ For instance, the simple JSON document in Listing \ref{lis:json}, can be declare
 
 JSON Schema can define a document must have several , including regular data-types like objects, arrays, strings, booleans, numbers and, null. Each of these types has different keywords that help to specify and restrict the schema. The most important attribute is “type” whose value is defining the schema. With validation keywords included in the schema, constraints can be applied to an instance. \cite{json-model}. For example in Listing \ref{lis:json-schema}, \lstinline[basicstyle=\ttfamily]|{"type": "string"}| specify a value with string type.
 
-We use YAML syntax to represent the Application State Model in JSON Schema in this thesis for readability reasons. YAML is a human-readable syntax and can be converted to JSON syntax without extra configuration. Listing \ref{lis:yaml-simple} shows a simple example based on Listing \ref{lis:json-schema} which is a JSON Schema document.
+We use YAML syntax to represent the JSON Schema in this thesis for readability reasons. YAML is a human-readable syntax and can be converted to JSON syntax without extra configuration. Listing \ref{lis:yaml-simple} shows a simple example based on Listing \ref{lis:json-schema} which is a JSON Schema document.
 
 
 \lstset{
