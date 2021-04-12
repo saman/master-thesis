@@ -1,6 +1,6 @@
 \chapter{Architectural Overview}
 \label{ch:architectural_overview}
-In this chapter, the architectural overview of the run-time state migration approach is discussed. First, the publish-subscribe pattern is explained as a mean to exchange state information and manage available devices as well as which state models are supported by an application. The middleware is explained next, which uses the publish-subscribe pattern and acts as a message broker. Subsequently, the library as well as the interfaces that need to be implemented by the respective applications are explained. The last part explains the message exchange in the different life cycle phases of the migration approach.
+In this chapter, the architectural overview of the run-time state migration approach is discussed. First, the publish-subscribe pattern is explained as a mean to exchange state information and manage available devices as well as which state models are supported by an application. The middleware is explained next, which uses the publish-subscribe pattern and acts as a message broker. Subsequently, the library as well as the interfaces that need to be implemented by the respective applications are explained. Moreover, we explain the message exchange in the different life cycle phases of the migration approach. The last part explains the Model Repository and suggests an improved concept.
 
 \section{Publish–subscribe pattern}
 An infrastructure is needed to exchange run-time states of applications across different devices. Also, devices should know which other devices with common Application State Models are available and notice if they join or leave the network. Moreover, devices should be able to migrate the run-time state and acknowledge other devices when migration is done.
@@ -18,14 +18,14 @@ Figure \ref{fig:publish–subscribe} illustrates an overview of publish–subscr
 \end{figure} \FloatBarrier
 
 \subsection{Middleware}
-As middleware acts as a message broker, if devices are not on the same network, a middleware should exist in which applications can communicate with each other. Figure \ref{fig:solution-overview} shows the role of middle-ware.
+As the middleware acts as a message broker, if devices are not on the same network, a middleware should exist in which applications can communicate with each other. Figure \ref{fig:solution-overview} shows the role of middleware.
 This middleware can handle sending and receiving the run-time state.
 The goal of having this middleware is applications which coupled with
 libraries, can introduce themselves, find each other, and migrate the run-time state.
 
-Also, as mentioned in \textbf{R4 Device Management}, middleware is responsible for device discovery and notifying other devices if a device joins or leaves with the same Application State Model. The message exchange for device discovery is explains in subchapter 6.5.
+Also, as mentioned in \textbf{R4 Device Management}, the middleware is responsible for device discovery and notifying other devices if a device joins or leaves with the same Application State Model. The message exchange for device discovery is explains in subchapter 6.5.
 
-As in this thesis, we considered the publish-subscribe pattern as the architecture, middleware is the intermediary message broker.
+As in this thesis, we considered the publish-subscribe pattern as the architecture, the middleware is the intermediary message broker.
 
 \subsection{Topics}
 There are some topics each device should subscribe to them. Devices who subscribed to these topics receive a message if another device publish a message to them.
@@ -75,50 +75,48 @@ new-event/windows-woven
 
 
 \subsection{Messages}
-In this architecture, we need some message to fulfill our requirements like device introduction.
+In this architecture, we need some message to fulfill our requirements like device introduction and transferring a run-time state.
 
 \subsubsection{Device Introduction}
-When a user runs an application, the application should introduce itself to other devices on the network. Moreover, other devices should get notify and response with their introduction.
+When a user runs an application, the application should introduce itself to other devices on the network. Moreover, other devices should get notify and response about their existence by an introduction.
 
 \subsubsection{Device Leave}
-After an application got closed or a device went offline, it should notify other devices about this message. Moreover, other devices should not be able to communicate with that device.
+After an application got closed or a device went offline, it should notify other devices about its absence. Moreover, other devices should not be able to communicate with that device anymore.
 
 \subsubsection{Device Has Run-time State}
-If a device has a run-time state, it should notify other devices which support  common Application State Model.
+If a device has a run-time state, it should notify other devices which support  common Application State Model about having a run-time state.
 
 \subsubsection{Request Run-time State}
-A device can request a run-time state of other devices supporting the common Application State Model. The target device should respond to this request.
+A device can request a run-time state of other devices supporting the common Application State Model. The source device should respond to this request by sending its run-time state.
 
 \subsubsection{Send Run-time State}
-As the source device can request a run-time state, the target device should respond to this request by sending its run-time state. Also, the source application should be aware of receiving it.
+As the target device can request a run-time state, the source device should respond to this request by sending its run-time state. Also, the target application should be aware of receiving it.
 
-\subsubsection{Run-time State Migration}
-After the target device received a run-time state and is adjusted into the application, the target device should notify the source device about finalizing the run-time state migration to react to this message.
+\subsubsection{Finalizing Run-time State Migration}
+After the target device received a run-time state and is adjusted into the application, the target device should notify the source device about finalizing the run-time state migration to react to this message like by resetting its UI and removing its run-time state.
 
 \subsection{Actions}
-In this architecture, we need some actions to fulfill our requirements like store a run-time state.
+In this architecture, we need some actions to fulfill our requirements, like store a run-time state and adding the new device that joined recently.
 
 \subsubsection{Store Run-time State}
-If a device has a run-time state, it should be stored if other devices request the run-time state migration.
+When a device has a run-time state, it should be stored in case other devices request a run-time state migration.
 
 \subsubsection{Add Device}
-If a device gets a Device Introduction message, it should add that particular device to its list.
+Whenever a device receives a Device Introduction message, it should add the device to its list so that it can access it in the future.
 
 \subsubsection{Remove Device}
-If a device gets a Device Leave message, it should remove that particular device from its list.
+Whenever a device receives a Device Leave message, it should remove that particular device from its list to prevent further communication.
 
 \section{Library}
 As state in \textbf{R1 Applicable on Existing Applications}, this approach is meant to support run-time state migration for existing applications on different platforms; special libraries in different programming languages and platforms should be developed. 
 These libraries should provide basic functionality such as communication, validation of run-time states based on an Application State Model, and an API to support extraction and injection of run-time states between same-purpose applications with common Application State Model.
 
-Developers can integrate these libraries in existing applications to enable run-time state migration, and they should implement some glue code in existing source code to adapt the library into existing applications (Figure \ref{fig:solution-overview}).
+Developers can integrate these libraries in existing applications to enable run-time state migration, and they should implement some glue code in existing source code to adapt the library into existing applications (Figure \ref{fig:solution-overview}). The library reflect are the generic part of run-time state migration, the glue code and the interfaces derived from the application state model reflect the application specific part.
 
-The library reflect are the generic part of run-time state migration, the glue code and the interfaces derived from the application state model reflect the application specific part.
-
-These libraries should be written in the same programming languages as the source and target applications. These libraries should be able to communicate directly or with the help of middleware.
+These libraries should be written in the same programming languages as the source and target applications. They should be able to communicate directly or with the help of the middleware.
 If devices are on the same local network, these libraries should establish a point-to-point connection.
 Otherwise, they should be able to communicate with help the middleware over the internet.
-In this case, they should introduce themselves to the middleware to find each other; then, they can migrate the run-time state.
+In this case, they should introduce themselves to the middleware to find each other; then, they can migrate the run-time state. As mentioned before, the focus of the thesis is not providing different types of communications, only indirect communication with help of the middleware should be implemented.
 
 
 \section{Interfaces}
@@ -141,7 +139,7 @@ export interface SearchObject {
     submit?: boolean;
 }
 \end{js}
-\caption{Note Writing example interface in TypeScript.}
+\caption{Search example interface in TypeScript.}
 \label{lis:search-interface}
 \end{code}
 \FloatBarrier
@@ -154,9 +152,9 @@ After explanation of entities of the architecture in previous sections, the inte
 
 \section{Model Repository}
 
-As stated in requirement \textbf{R3 Model Repository}, we made a repository manager call Model Repository located on GitHub\footnote{\url{https://github.com/asml-lang/model-repository}}. Some models are available on this repository. Developers may use the search ability of GitHub to find their models. Also, after making a new model, developers can add it the repository manager by making a pull request. So, other developers may use it for their applications.
+As stated in requirement \textbf{R3 Model Repository}, we made a repository manager call Model Repository located on GitHub\footnote{\url{https://github.com/asml-lang/model-repository}}. Some models are available on this repository. Developers may use the search ability of GitHub to find their suitable Application State Models. Also, after making a new model, developers can add it the repository manager by making a pull request. So, other developers may use it for their applications.
 
-Currently, a GitHub repository is sufficient for this thesis. Although conceptually, we may be able to improve the Model Repository so that developers may easily search the model they need by name, description, or keywords and download or customize them. In addition, if the developer does not find the model they need, they could create a custom model using the Model Repository editor. Additionally, the models may be uploaded to the Model Repository if they have already developed one. The concept behind the solution is valid; however, implementation is a future work objective. Figure \ref{fig:model-repo} is an improved Model Repository that shown as a wireframe concept.
+Currently, a GitHub repository is sufficient for this thesis. Although conceptually, we may be able to improve the Model Repository so that developers may easily search the model they need by name, description, or keywords and download or customize them. In addition, if the developer does not find the model they need, they could create a custom model using the Model Repository editor. Additionally, if they have already developed a model, they may upload it to the Model Repository. The concept behind the solution is valid; however, implementation is a future work objective. Figure \ref{fig:model-repo} is an improved Model Repository that shown as a wireframe concept.
 
 \FloatBarrier
 \begin{figure}[H]

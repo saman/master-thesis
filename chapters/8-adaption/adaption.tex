@@ -1,18 +1,19 @@
 \chapter{Adaption of Example Applications}
 \label{ch:adaption}
-In this chapter, to show the feasibility of the approach, two open-source e-mail clients adapted to support run-time state migration based on the developed approach as part of the thesis.
+In this chapter, to show the feasibility of the run-time state migration approach, two open-source e-mail clients (Mailspring and K-9 Mail) adapted to support run-time state migration based on the developed approach as part of the thesis.
 
-As a developer who wants to implement the enabling run-time state migration, we used the developed approach, middleware, libraries, deriving interfaces, and adaptability to existing same-purpose applications. 
+As a developer who wants to implement the enabling run-time state migration, we used the developed approach, middleware, libraries, deriving interfaces, helper tools, and adaptability to existing same-purpose applications. 
 
 \section{Application State Models}
-After analyzing states of Mailspring and K-9 Mail applications and their source code (Table \ref{tab:states_of_email_applications}), we decided to model \textit{search} and \textit{sending-email} states. We have developed two common Application State Models in Chapter \ref{ch:language} for these two applications which are Listing \ref{lis:search-schema} and \ref{lis:sending-email-schema}. 
+After analyzing states of Mailspring and K-9 Mail applications and their source code (Table \ref{tab:states_of_email_applications}), we decided to model \textit{search} and \textit{sending-email} states. We have developed two common Application State Models in Chapter \ref{ch:language} for these two applications which are Listing \ref{lis:search-schema} and \ref{lis:sending-email-schema}. In this chapter, as a developer we add the support of these two Application State Models to Mailspring and K-9 Mail.
 
 
 
 \section{Example Applications}
+Suggestions for e-mail clients to be adapted are K-9 Mail for Android and Mailspring for desktop operating systems.
 These applications are for different platforms, and their source code is freely accessible to allow the integration of libraries. 
-Suggestions for e-mail clients to be adapted are K-9 Mail for Android and Mailspring for desktop operating systems. They are interactive applications for end-users and have sufficient complexity (e.g., applications do not have only one single state).
-K-9 Mail Android application is developed in Java; therefore, it requires the Android library, which we developed for run-time state migration. Moreover, Mailspring is developed using Electron and TypeScript for desktop operating systems, and it needs the JavaScript library for run-time state migration.
+ They are interactive applications for end-users and have sufficient complexity (e.g., applications do not have only one single state).
+K-9 Mail Android application is developed in Java and Kotlin; therefore, it requires the Android library, which we developed for run-time state migration. Moreover, Mailspring is developed using Electron and TypeScript for desktop operating systems, and it needs the JavaScript library for run-time state migration.
 
 \subsection{Mailspring}
 Mailspring is an open-source e-mail client application\footnote{\url{https://getmailspring.com/}}. The source code of this application is available on GitHub\footnote{\url{https://github.com/Foundry376/Mailspring}}. This application can be installed on desktop operating systems like macOS, Linux, and Windows.
@@ -22,7 +23,7 @@ Because Mailspring is written in TypeScript (which is a superset of JavaScript) 
 \subsubsection{Adaptions}
 The run-time state migration JavaScript library and Application State Models interfaces are integrated into the main process's script. On the other hand, all UI adaptions are in ReactJS components. Adaptions are added to the fork of this project, hosted on GitHub\footnote{\url{https://github.com/asml-lang/mailspring}}. 
 
-Following is a brief description of the main implementation parts in Mailspring.
+Following is a brief description of how the main implementation parts in Mailspring should be implemented.
 \input{chapters/8-adaption/mailspring}
 
 
@@ -42,19 +43,19 @@ Following is a brief description of the main implementation parts in K-9 Mail.
 In this section, we explain all implemented UI adaptions in both applications to achieve a proper behavior of run-time state migration. 
 
 \subsubsection{Notifications}
-When a device joins or leaves, other devices which are subscribed to the same Application State Model's topic will be notified by \textit{onDeviceJoin} and \textit{onDeviceLeave} callbacks. Devices that gets this message show a native notification on their application and inform the user about the connectivity status of the device.
+When a device joins or leaves, other devices which are subscribed to the same Application State Model's topic will be notified by \textit{onDeviceJoin} and \textit{onDeviceLeave} callbacks. Devices that gets this message show a native notification on their application and inform the user about the connectivity status of the device. Figures \ref{fig:adapt-noti} shows a notification on Mailspring and K-9 Mail about joining a new device to \textit{search} topic.
 
 \subsubsection{Run-time State Migration Button}
-For each view of a state, we developed a floating action button as the main button of run-time state migration. When the user clicks on this button, applications display two other buttons as \textit{Set State} for push method and \textit{Get State} for the pull method. The user can start the migration process by clicking one of these buttons on the current run-time state. Figures \ref{fig:adapt-noti} and \ref{fig:adapt-compose} show run-time state migration button on different views of Mailspring and K-9 Mail. 
+For each view of a state, we developed a floating action button as the main button of run-time state migration. When the user clicks on this button, applications display two other buttons as \textit{Set State} for push method and \textit{Get State} for the pull method. The user can start the migration process by clicking one of these buttons on the view of current run-time state. Figures \ref{fig:adapt-noti} and \ref{fig:adapt-compose} show run-time state migration button on different views of Mailspring and K-9 Mail. 
 
 \subsubsection{Device List Modal Box}
-When the user clicks on the run-time state migration button and clicks on one of the migration methods' buttons, applications show a modal box. This modal box displays the name of the current run-time state, migration method, and the list of the devices available for migration by \textit{getDevices}. The user should select a device from the list and click on the \textit{migrate} button. By clicking on the \textit{migrate} button, If the chosen method is push, the run-time state can be migrated by \textit{sendState} method explained in 7.3.1. Otherwise, for the pull method, the run-time state can be requested by \textit{getStateDevice}. In the end, the modal box gets closed. Figure \ref{fig:adapt-modal} shows device list modal box on Mailspring and K-9 Mail.
+When the user clicks on the run-time state migration button and clicks on one of the migration methods' buttons, applications show a modal box. This modal box displays the name of the current run-time state, migration method, and the list of the devices available for migration by \textit{getDevices}. The user should select a device from the list and click on the \textit{migrate} button. By clicking on the \textit{migrate} button, If the chosen method is push, the run-time state can be migrated by \textit{sendState} method explained in 7.3.1. Otherwise, for the pull method, the run-time state can be requested by \textit{getStateDevice} method explained in 7.3.1. In the end, the modal box gets closed. Figure \ref{fig:adapt-modal} shows device list modal box on Mailspring and K-9 Mail.
 
 \subsubsection{Run-time State Adjustments}
-We adjust both applications for both \textit{search} and \textit{sending-email} states. If the target device gets a new run-time state by \textit{onStateReceive}, application react accordingly. For \textit{search} state, the input of the query text gets updated with the source application's query text. Moreover, if the search is already submitted on the source application, the target device also tries to submit the query text and shows a result. Moreover, for \textit{sending-email} state, if the target device gets a new run-time state by push method, it displays the new draft on a new compose window. Also, the user can click on the run-time state migration button on the compose window and pull and push the run-time state of the current window. After adjustment, the target device announces the end of migration with \textit{setMigration} to the source device.
+We adjust both applications for both \textit{search} and \textit{sending-email} states. If the target device receives a new run-time state by \textit{onStateReceive} callback explained in 7.3.2, application react accordingly. For \textit{search} state, the input of the query text gets updated with the source application's query text. Moreover, if the search is already submitted on the source application, the target device also tries to submit the query text and shows a result. Moreover, for \textit{sending-email} state, if the target device gets a new run-time state by push method, it displays the new draft on a new compose window. Also, the user can click on the run-time state migration button on the compose window and pull and push the run-time state of the current window. After adjustment, the target device announces the end of migration to the source device with \textit{setMigration} method explained in 7.3.1.
 
 \subsubsection{Removing Run-time State}
-When a device gets \textit{onStateMigration}, application resets all input of the corresponding run-time state. For \textit{search} state, in query text input will be empty, and the list of results will be reset. For \textit{sending-email}, the current compose window will be closed.
+When \textit{onStateMigration} callback explained in 7.3.2 gets called, application resets all input of the corresponding run-time state. For \textit{search} state, in query text input will be empty, and the list of results will be reset. For \textit{sending-email}, the current compose window will be closed and the draft will be deleted.
 
 \subsubsection{UI Screenshots}
 In this section, we demonstrate UI adjustments in example applications.

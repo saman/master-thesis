@@ -4,7 +4,7 @@ In this chapter, we summarize the thesis and discuss the future work.
 
 \section{Conclusion}
 This thesis presents an approach for enabling run-time state migration between same-purpose applications of different vendors. We investigate the problem by analyzing same-purpose applications and draft some requirements. We suggest a Domain-specific language for modeling run-time states based on JSON Schema. The name of this DSL is Application State Modeling Language (ASML) and allows developers to write a platform-independent state specification for each state. This state specification is the Application State Model. The ASML allows us to validate the Application State Model against its schema. Also, a run-time state can be validated against Application State Model.
-Moreover, we present a repository manager for Application State Models, called Model Repository. This repository allows developers to find and select an existing Application State Model. Also, they can write their model and contribute by adding it to the repository. We use the publish-subscribe pattern as the main architecture and discuss the role of middleware as a message broker and its messages, actions, and topics. We decided to simplify the work by making libraries available to other developers. These libraries eliminate the need for developers to re-implement basic functionality, and the integration effort is limited to glue code that uses the interfaces and implements run-time state migration's life cycles. The middleware is based on MQTT Protocol with Mosquitto message broker. Two libraries in JavaScript and Java have been developed based on our API Reference. For testing purposes, we integrate these libraries in two demo applications.
+Moreover, we present a repository manager for Application State Models, called Model Repository. This repository allows developers to find and select an existing Application State Model. Also, they can write their model and contribute by adding it to the repository. We use the publish-subscribe pattern as the main architecture and discuss the role of the middleware as a message broker and its messages, actions, and topics. We decided to simplify the work by making libraries available to other developers. These libraries eliminate the need for developers to re-implement basic functionality, and the integration effort is limited to glue code that uses the interfaces and implements run-time state migration's life cycles. The middleware is based on MQTT Protocol with Mosquitto message broker. Two libraries in JavaScript and Java have been developed based on our API Reference. For testing purposes, we integrate these libraries in two demo applications.
 Additionally, Developers can rely on our helper tools to simplify their job. Finally, we evaluate the impact of our approach on existing real-world applications. We implement libraries in Mailspring and K-9 Mail and modify their user interfaces to accommodate our approach.
 
 As a result, with our approach, it is now possible to adapt applications that do not support run-time state migration to be altered after their initial development by someone other than the original developer. The adaption can be accomplished by writing a bit of glue code, reusing our libraries, and implementing corresponding life cycles.
@@ -17,11 +17,11 @@ In the future, we want to tackle the following points.
 Firstly, we want to add the support of file transfer. Currently, our state specification and implementation only support primitive data types.
 
 \paragraph{Security}
-Secondly, we want to add security to the commutation between the library and middleware. At the moment, the run-time states are not encrypted. Thereby, it can be end-to-end encryption between devices.
+Secondly, we want to add security to the commutation between the library and the middleware. At the moment, the run-time states are not encrypted. Thereby, it can be end-to-end encryption between devices.
 
 \paragraph{Underlying Persistent State}
 Thirdly, we want to consider the underlying persistent state in our implementation. Currently, we are only interested in the run-time state and are not concerned with the persistent data.
-For example, at present, two different email accounts (University and Job) have the ability to migrate their run-time states. We would like to add the support for run-time states coupled to unaligned persistency; Meaning the run-time state only makes sense if it is coupled to the same persistent state. Because persistent data is used in migration, it has access to the same network, data storage, etc.
+For example, at present, two different e-mail accounts (University and Job) have the ability to migrate their run-time states. We would like to add the support for run-time states coupled to unaligned persistency; Meaning the run-time state only makes sense if it is coupled to the same persistent state. Because persistent data is used in migration, it has access to the same network, data storage, etc.
 
 \paragraph{Improving Model Repository}
 Fourthly, we are planning to make enhancements to the Model Repository. Model Repository is currently hosted on GitHub. However, we left the foundation for it by proposing a concept. It is our intention to implement the Model Repository as a web application so that every developer can rely on existing models and contribute their own models.
@@ -29,8 +29,8 @@ Fourthly, we are planning to make enhancements to the Model Repository. Model Re
 \paragraph{Refine the Modeling Approach}
 Finally, we intended to support state migration between same-purpose applications based on Application State Models that are partially common but not exactly the same.
 We want to refine the modeling approach to cope with differences in an Application State Model, e.g., by using model transformations.
-For instance, in the source application, \textit{firstName} and \textit{lastName} values are contained in the run-time state; however, the target application only has \textit{fullName} values within its run-time state.
-Thereby, By mapping the \textit{fullName} to the combination of \textit{firstName} and \textit{lastName}, the approach supports the migration of run-time state from source to the target application.
+For instance, in the source application, \textit{firstName} and \textit{lastName} values are contained in the run-time state; however, the target application only has \textit{fullName} value within its run-time state.
+Thereby, By mapping the \textit{fullName} to the combination of \textit{firstName} and \textit{lastName}, the approach supports the migration of run-time state from the source to the target application.
 
 
 
