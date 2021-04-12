@@ -113,7 +113,7 @@ _onState = (data, wndwKey) => {
 \FloatBarrier
 
 After finishing the migration, the target device should notify the source device about finalizing the run-time state migration with \textit{setMigration} method. In Mailspring we changed the UI to call \textit{setMigration} method when the run-time state adjusted. Listing \ref{lis:js-mg-set} shows this implementation for \textit{search} state.
-Also, when the source device receives the migration message and \textit{onStateMigration} callback is being called, its the run-time state should be reset. Listing \ref{lis:js-mg-get} shows how we implement this callback. 
+Also, when the source device receives the migration message and \textit{onStateMigration} callback is being called, its the run-time state should be reset. Listing \ref{lis:js-mg-get} shows how we implemented this callback. 
 
 \FloatBarrier
 \begin{code}
