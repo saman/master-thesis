@@ -23,9 +23,14 @@ Secondly, we want to add security to the commutation between the library and mid
 Thirdly, we want to consider the underlying persistent state in our implementation. Currently, we are only interested in the run-time state and are not concerned with the persistent data.
 For example, at present, two different email accounts (University and Job) have the ability to migrate their run-time states. We would like to add the support for run-time states coupled to unaligned persistency; Meaning the run-time state only makes sense if it is coupled to the same persistent state. Because persistent data is used in migration, it has access to the same network, data storage, etc.
 
+\paragraph{Improving Model Repository}
+Fourthly, we are planning to make enhancements to the Model Repository. Model Repository is currently hosted on GitHub. However, we left the foundation for it by proposing a concept. It is our intention to implement the Model Repository as a web application so that every developer can rely on existing models and contribute their own models.
+
 \paragraph{Refine the Modeling Approach}
 Finally, we intended to support state migration between same-purpose applications based on Application State Models that are partially common but not exactly the same.
 We want to refine the modeling approach to cope with differences in an Application State Model, e.g., by using model transformations.
 For instance, in the source application, \textit{firstName} and \textit{lastName} values are contained in the run-time state; however, the target application only has \textit{fullName} values within its run-time state.
 Thereby, By mapping the \textit{fullName} to the combination of \textit{firstName} and \textit{lastName}, the approach supports the migration of run-time state from source to the target application.
+
+
 

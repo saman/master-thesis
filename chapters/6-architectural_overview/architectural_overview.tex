@@ -150,3 +150,19 @@ export interface SearchObject {
 \section{Life Cycles}
 After explanation of entities of the architecture in previous sections, the interaction between these entities in different life cycle phases is explained. These life cycles phases consist of main entities, actions and sequence of messages discussed in the messages section, and they are implemented in chapter \ref{ch:implementation}. 
 \input{chapters/6-architectural_overview/seq}
+
+
+\section{Model Repository}
+
+As stated in requirement \textbf{R3 Model Repository}, we made a repository manager call Model Repository located on GitHub\footnote{\url{https://github.com/asml-lang/model-repository}}. Some models are available on this repository. Developers may use the search ability of GitHub to find their models. Also, after making a new model, developers can add it the repository manager by making a pull request. So, other developers may use it for their applications.
+
+Currently, a GitHub repository is sufficient for this thesis. Although conceptually, we may be able to improve the Model Repository so that developers may easily search the model they need by name, description, or keywords. In addition, if the developer does not find the model they need, they could create a custom model using the Model Repository editor. Additionally, the models may be uploaded to the Model Repository if they have already developed one. The concept behind the solution is valid; however, implementation is a future work objective. Figure \ref{fig:model-repo} is an improved Model Repository that shown as a wireframe concept.
+
+\FloatBarrier
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{../figures/model-repo.pdf}
+    \centering
+    \caption{A wireframe concept for Model Repository}
+    \label{fig:model-repo}
+\end{figure}
+\FloatBarrier
