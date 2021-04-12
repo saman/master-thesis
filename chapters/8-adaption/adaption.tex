@@ -23,160 +23,20 @@ Because Mailspring is written in TypeScript (which is a superset of JavaScript) 
 The run-time state migration JavaScript library and Application State Models interfaces are integrated into the main process's script. On the other hand, all UI adaptions are in ReactJS components. Adaptions are added to the fork of this project, hosted on GitHub\footnote{\url{https://github.com/asml-lang/mailspring}}. 
 
 Following is a brief description of the main implementation parts in Mailspring.
-
-\paragraph{Library Usage}
-The main process's script of Mailspring is implemented in \lstinline[basicstyle=\ttfamily]{application.ts} which is in \lstinline[basicstyle=\ttfamily]{app/src/browser/} directory.
-We have imported the JavaScript library of run-time state migration, \textit{search} and \textit{sending-email} Application State Models and their interfaces in this script. Listing \ref{lis:js-import} shows how this import is done.
-
-\FloatBarrier
-\begin{code}
-\begin{js2}
-import RuntimeStateMigration from 'rsm-node';
-import sendingEmail from '../models/sending-email.json';
-import searchEmail from '../models/search.json';
-import { 
-    SearchObject,
-    Convert as SearchObjectConvert
-} from '../models/Search';
-import {
-    SendingEmailObject,
-    Convert as SendingEmailObjectConvert
-} from '../models/SendingEmail';
-\end{js2}
-\caption{Import of JavaScript library of run-time state migration, Application State Models and their interfaces}
-\label{lis:js-import}
-\end{code}
-\FloatBarrier
-
-\paragraph{Application Initialization}
-The main process's script has a entry point which is \lstinline[basicstyle=\ttfamily]{start} method. An instance of JavaScript library has been made in this method with some configuration parameters. Also, callback methods which we have implemented in main process's script are bound to the instance of the library as parameters. Furthermore, 
-Application State Models are added in this method which \textit{addModel} method. Moreover, \textit{DeviceIntroduction} method is being call here. Listing \ref{lis:js-app-init} shows a snippet that we use to implement the instruction above.
-
-\FloatBarrier
-\begin{code}
-\begin{js2}
-this.rsm = new RuntimeStateMigration(
-  { 
-    name: 'Mailspring MAC',
-    server: {
-        url: 'mqtt://130.185.123.111',
-        port: 1883
-    }
-  },
-  this.rsmOnStateRequest.bind(this),
-  this.rsmOnStateReceive.bind(this),
-  this.rsmOnStateMigration.bind(this),
-  this.rsmOnDeviceJoin.bind(this),
-  this.rsmOnDeviceLeave.bind(this),
-);
-
-this.rsm.addModel(sendingEmail);
-this.rsm.addModel(searchEmail);
-this.rsm.introduce();
-\end{js2}
-\caption{Application initialization necessary codes}
-\label{lis:js-app-init}
-\end{code}
-\FloatBarrier
-
-\paragraph{Transferring Run-time State}
-In case of any changing in inputs of \textit{search} and \textit{compose} views in Mailspring, the current run-time state of them is being stored with \textit{setState} in library, in case of an application request for them. Also, other devices with the same Application State Model should be noticed when this device has a state or not with \textit{setHasState} method. Listing \ref{lis:js-setate} shows how we used this method for \textit{search} state.
-
-\FloatBarrier
-\begin{code}
-\begin{js2}
-const model_name = 'search';
-
-this.rsm.setHasState(model_name, true);
-
-const search: SearchObject = state;
-this.rsm.setState(model_name, search);
-\end{js2}
-\caption{Using the setState and setHasState methods}
-\label{lis:js-setate}
-\end{code}
-\FloatBarrier
-
-
-As we discussed in Chapter \ref{ch:implementation}, when any device request for run-time state of the source application, the \textit{onStateRequest} callback will be called. Listing \ref{lis:js-request} shows how we have implemented this method in Mailspring. 
-  
-\FloatBarrier
-\begin{code}
-\begin{js2}
-rsmOnStateRequest(data) {
-   this.rsm.sendState(data.model_name, data.device.id);
-}
-\end{js2}
-\caption{Using the onStateRequest method}
-\label{lis:js-request}
-\end{code}
-\FloatBarrier
-
-When a device receive a state the \textit{onStateReceive} callback will be called. In Mailspring we wrote a code in \textit{rsmOnStateReceive} method to find the corresponding window by and send the run-time state to UI with Electron \lstinline[basicstyle=\ttfamily]{ipcRenderer} by \textit{transferToWindow} method. In UI components we implemented a method to adjust the new run-time state. Listing \ref{lis:js-receive} shows a method that adjust the new run-time state of \textit{search} state.
-
-\FloatBarrier
-\begin{code}
-\begin{js2}
-
-rsmOnStateReceive(data) {
-    this.transferToWindow(data.model_name, data.state);
-}
-
-// UI Code Example
-_onState = (data, wndwKey) => {
-    const search: SearchObject = SearchObjectConvert.toSearch(data);
-    
-    // Mailspring native variable and methods that we have changed
-    this._searchQuery = search.query || "";
-    this._submit = search.submit || false;
-    this.trigger();
-};
-\end{js2}
-\caption{Using the onStateReceive method to adjust new run-time state}
-\label{lis:js-receive}
-\end{code}
-\FloatBarrier
-
-After finishing the migration, the target device should notify the source device about finalizing the run-time state migration with \textit{setMigration} method. In Mailspring we changed the UI to call \textit{setMigration} method when the run-time state adjusted. Listing \ref{lis:js-mg-set} shows this implementation for \textit{search} state.
-Also, when the source device receives the migration message and \textit{onStateMigration} callback is being called, its the run-time state should be reset. Listing \ref{lis:js-mg-get} shows how we implement this callback. 
-
-\FloatBarrier
-\begin{code}
-\begin{js2}
-const model_name = 'search';
-this.rsm.setMigration(model_name, source_device_id);
-\end{js2}
-\caption{Notifying source device the migration is complete}
-\label{lis:js-mg-set}
-\end{code}
-\FloatBarrier
-
-\FloatBarrier
-\begin{code}
-\begin{js2}
-rsmOnStateMigration(data) {
-    const search: SearchObject = {};
-    this.rsm.setState(data.model_name, SearchObject);
-    this.rsm.setHasState(data.model_name, false);
-}
-\end{js2}
-\caption{Resetting the run-time state when get a migration message}
-\label{lis:js-mg-get}
-\end{code}
-\FloatBarrier
+\input{chapters/8-adaption/mailspring}
 
 
 \subsection{K-9 Mail}
 K-9 Mail is an open-source e-mail client application\footnote{\url{https://k9mail.app/}}. The source code of this application is available on GitHub\footnote{\url{https://github.com/k9mail/k-9}}. This application can be installed on Android devices.
 
 \subsubsection{Architecture}
-K-9 Mail is written in Java 8. However, the new code base is migrating to Kotlin. The K-9 Mail project consists of different modules. The \textit{k9mail} is the main module that includes code for database interaction, notification, and activities. Another module is the \textit{k9mail-library} which is the back-end code for decoding e-mails and contacting mail providers. 
+K-9 Mail is written in Java 8. However, the new code base is partially migrated to Kotlin. The K-9 Mail project consists of different modules. The \textit{k9mail} is the main module that includes code for database interaction, notification, and activities. Another module is the \textit{k9mail-library} which is the back-end code for decoding e-mails and contacting mail providers. 
 
 \subsubsection{Adaptions}
-As we worked only on the application, all changes are implemented in \textit{k9mail} module. The run-time state migration Android library has been added to this module as a dependency. The \textit{k9mail} consist of different packages. The integration of run-time state migration is implemented in \textit{ui} package.
+As we worked only on the application, all changes are implemented in \textit{k9mail} module. The run-time state migration Android library has been added to this module as a dependency. The \textit{k9mail} consist of different packages. The integration of run-time state migration is implemented in \textit{ui} package. Adaptions are added to the fork of this project, hosted on GitHub\footnote{\url{https://github.com/asml-lang/k-9}}. 
 
-Adaptions are added to the fork of this project, hosted on GitHub\footnote{\url{https://github.com/asml-lang/k-9}}. 
-
+Following is a brief description of the main implementation parts in K-9 Mail.
+\input{chapters/8-adaption/k9}
 
 \subsection{UI Adaptions}
 In this section, we explain all implemented UI adaptions in both applications to achieve a proper behavior of run-time state migration. 
@@ -234,3 +94,5 @@ Figure \ref{fig:adapt-modal} shows the device modal of Mailspring and K-9 Mail w
 \FloatBarrier
 
 
+\subsection{Storyboard}
+\input{chapters/8-adaption/storyboard}

@@ -1,0 +1,148 @@
+
+\paragraph{Library Usage}
+We have imported the Java library of run-time state migration, \textit{search} and \textit{sending-email} Application State Models and their interfaces in each corresponding class which are \textit{MessageList.kt} for \textit{search} state and \textit{MessageCompose.java} for \textit{sending-email} state. Listing \ref{lis:java-import} shows how this import is done for \textit{search} state.
+
+\FloatBarrier
+\begin{code}
+\begin{javas}
+import com.github.asml.rsm.android.RuntimeStateMigration
+import com.github.asml.rsm.android.interfaces.OnDeviceJoinListener
+import com.github.asml.rsm.android.interfaces.OnDeviceLeaveListener
+import com.github.asml.rsm.android.interfaces.OnStateMigrationListener
+import com.github.asml.rsm.android.interfaces.OnStateReceiveListener
+import com.github.asml.rsm.android.interfaces.OnStateRequestListener
+import com.fsck.k9.models.SearchState
+\end{javas}
+\caption{K-9 Mail Adaption: Import of Android library of run-time state migration, Application State Models and their interfaces}
+\label{lis:java-import}
+\end{code}
+\FloatBarrier
+
+\paragraph{Application Initialization}
+An instance of Java library has been made in \textit{messageListUiModule} with some configuration. Listing \ref{lis:java-app-init} shows initializing the library.
+
+\FloatBarrier
+\begin{code}
+\begin{java}
+RuntimeStateMigration.init(
+        androidApplication(),
+        Config(
+            Server("tcp://130.185.123.111", 1883),
+            "K9-Mail Android"
+        )
+)
+\end{java}
+\caption{K-9 Mail Adaption: Application initialization necessary codes}
+\label{lis:java-app-init}
+\end{code}
+\FloatBarrier
+
+Listing \ref{lis:java-app-instance} shows \textit{MessageList} class make an instance of the library on its constructor. Also, callback methods which we have implemented are bound to the instance of the library with their setter methods. 
+
+\FloatBarrier
+\begin{code}
+\begin{javas}
+private val RSM_MODEL = "search"
+private RuntimeStateMigration rsm = RuntimeStateMigration.getInstance();
+
+rsm.setOnDeviceJoinListener(this::onDeviceJoin)
+rsm.setOnDeviceLeaveListener(this::onDeviceLeave)
+rsm.setOnStateRequestListener(this::onStateRequest)
+rsm.setOnStateReceiveListener(this::onStateReceive)
+rsm.setOnStateMigrationListener(this::onStateMigration)       
+\end{javas}
+\caption{K-9 Mail Adaption: Instance of Android Library}
+\label{lis:java-app-instance}
+\end{code}
+\FloatBarrier
+
+Each class has a entry point which is \lstinline[basicstyle=\ttfamily]{onCreate} method, which \textit{DeviceIntroduction} method is being called there and Application State Models are added in this method with \textit{addModel} method. Listing \ref{lis:java-app-intro} shows a snippet that we use to implement the instruction above.
+
+\FloatBarrier
+\begin{code}
+\begin{java}
+rsm.addModel(SearchState)
+rsm.introduce()
+\end{java}
+\caption{K-9 Mail Adaption: Using \textit{DeviceIntdocution} in Android Library}
+\label{lis:java-app-intro}
+\end{code}
+\FloatBarrier
+
+\paragraph{Transferring Run-time State}
+In case of any changing in inputs of \textit{MessageList} and \textit{MessageCompose} views other devices with the same Application State Model should be noticed whether this device has a state or not with \textit{setHasState} method. Listing \ref{lis:java-setate} shows how we used this method for \textit{search} state.
+
+\FloatBarrier
+\begin{code}
+\begin{java}
+override fun onQueryTextChange(newText: String?): Boolean {
+    rsm.setHasState(RSM_MODEL, newText?.isNotEmpty() == true)
+    return false
+}
+\end{java}
+\caption{K-9 Mail Adaption: Using the setHasState method}
+\label{lis:java-setate}
+\end{code}
+\FloatBarrier
+
+
+As we discussed in Chapter \ref{ch:implementation}, when any device request for run-time state of the source application, the \textit{onStateRequest} callback will be called. Listing \ref{lis:java-request} shows how we have implemented this method in K-9 Mail for \textit{search} state. 
+  
+\FloatBarrier
+\begin{code}
+\begin{javas}
+fun onStateRequest(modelName: String?, device: Device?) {
+    if (modelName == RSM_MODEL) {
+        rsm.setState(
+            RSM_MODEL,
+            SearchState(
+                searchView.query.toString(),
+                submit_value)
+            .toString()
+        )
+        rsm.sendState(RSM_MODEL, device?.id)
+    }
+}
+\end{javas}
+\caption{K-9 Mail Adaption: Using the onStateRequest and sendState methods}
+\label{lis:java-request}
+\end{code}
+\FloatBarrier
+
+As we mentioned before, when a device receives a state the \textit{onStateReceive} callback will be called. In K-9 Mail we developed a method to distinguish between the received run-time state, assign it to corresponding view and adjust the new run-time state. Listing \ref{lis:java-receive} shows a method that adjust the new run-time state of \textit{search} state.
+
+\FloatBarrier
+\begin{code}
+\begin{js2}
+val searchState = SearchState.fromJsonString(state)
+searchView.setQuery(searchState.query, searchState.isSubmit)
+\end{js2}
+\caption{K-9 Mail Adaption: Using the onStateReceive method to adjust new run-time state}
+\label{lis:java-receive}
+\end{code}
+\FloatBarrier
+
+Like Mailspring, in K-9 Mail we use \textit{setMigration} method to notify other devices about finalizing the migration. Listing \ref{lis:java-mg-set} shows this implementation for \textit{search} state.
+Also,  the implementation of \textit{onStateMigration} callback which resets \textit{search} state in K-9 Mail shown in Listing \ref{lis:java-mg-get}.
+
+\FloatBarrier
+\begin{code}
+\begin{java}
+rsm.setMigration(RSM_MODEL, device?.id)
+\end{java}
+\caption{K-9 Mail Adaption: Notifying source device the migration is complete}
+\label{lis:java-mg-set}
+\end{code}
+\FloatBarrier
+
+\FloatBarrier
+\begin{code}
+\begin{java}
+if (modelName == RSM_MODEL && searchView.isShown) {
+    searchView.setQuery("", false)
+}
+\end{java}
+\caption{K-9 Mail Adaption: Resetting the run-time state when receives a migration message}
+\label{lis:java-mg-get}
+\end{code}
+\FloatBarrier

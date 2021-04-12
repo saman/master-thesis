@@ -4,13 +4,31 @@
 In this chapter, the fundamentals of Model-driven Software Engineering are discussed. Moreover, we stress on fundamentals of Domain-specific Language and some DSL examples. Since this thesis focus on the migration of run-time states, we also give a categorization of applications states. Furthermore, as we use JSON to define our DSL, we discuss about JSON and JSON Schema.
 
 \section{Model-driven Software Engineering}
-The Model-driven software engineering (MDSE) methodology takes the premise that models, as crucial elements of understanding and sharing complex software, are a practical way of working and thinking by transforming them into first-class citizens in software engineering\cite{mdse}. Models are essentially an abstract representation of the software system to be built. They are referred to as the primary artifact used to create parts of a software system automatically. \cite{mda-10.5555/579151}
+The Model-driven software engineering (MDSE) methodology takes the premise that models, as crucial elements of understanding and sharing complex software, are a practical way of working and thinking by transforming them into first-class citizens in software engineering. The purpose of a model can be anything from communication between people to the ability to develop a piece of software. The actual needs that they will address will determine how a model is defined and managed. \cite{mdse}. 
+
+\begin{definition}[Model \cite{mda-10.5555/579151}]
+A model is essentially an abstract representation of a software system’s structure, function, or behavior. 
+\end{definition}
+
+The model indicates that parts of the software system are generated. However, it may also indicate that the model should be interpreted at run-time, making it a central artifact as part of the software development process.
+
+\subsection{Model-driven Development (MDD)}
+MDD refers to a development paradigm in which models are their primary artifact. In MDD, the implementation is usually generated from the models (semi)automatically\cite{mdse}. MDD increases development speed. This is achieved through the automatic code generation from a model with transformation steps. In MDD, when a software architectures are defined and implemented, automated transformations increase software quality, since consistency is emphasized\cite{mdsd_en}.
+.
+
+\subsection{Model-based Engineering (MBE)}
+MBE or Model-based development is referred to as a softer version of MDE that models are not necessarily first-class citizens. The MBE process concerns the use of models in development, although they are not the key artifacts. As one example, consider a development process in which designers specify the domain models of the system during the analysis phase but then make the models available to programmers as the blueprints, to write the code without automatic code-generation involved \cite{mdse}.
+
 
 \section{Domain-specific Language}
 A Domain-Specific Language (DSL) is a language that is designed exclusively for a certain application domain. The language deals with the concepts and features specific to that particular domain. \cite{dsl}.
 Following are the most vital points in a DSL. The notation by which users can write programs is specified in the \textit{concrete syntax}. This notation can be textual, visual, or a combination of these. A data structure containing semantically related information conveyed by a model is known as \textit{abstract syntax}. It is devoid of any knowledge about the notation. In addition to structurally sound in terms of concrete and abstract syntax, a language's \textit{static semantics} is the collection of constraints and/or type system rules that programs must follow. The interpretation of a program to execute is referred to as \textit{execution semantics} \cite{dsl-eng}.
 
-The metamodel of a model is a model that defines the abstract syntax of a language used to describe a model. The meta prefix can be interpreted as \textit{the definition of}. This model represents an \textit{instance of} the metamodel. It should be mentioned that metamodel itself also is a model \cite{dsl-eng}.
+\begin{definition}[Metamodel \cite{dsl-eng}]
+The metamodel of a model is a model that defines the abstract syntax of a language used to describe a model. 
+\end{definition}
+
+In metamodel, the meta prefix can be interpreted as \textit{the definition of}. This model represents an \textit{instance of} the metamodel. It should be mentioned that metamodel itself also is a model.
 
 \subsection{Define a DSL}
 Designing DSLs accordingly requires careful attention to detail to meet requirements. Essentially, the main concern of DSL design consists of implementing concrete syntax and abstract syntax \cite{engineering_modeling_languages}.

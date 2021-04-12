@@ -1,0 +1,42 @@
+Figure \ref{fig:storyboard} shows a storyboard of implemented run-time state migration approach on two same-purpose applications which are Mailspring and K-9 Mail.
+
+\paragraph{Shot 1}
+Shows only K-9 Mail on an Android device is in the network. The user clicks on compose e-mail button on K-9 Mail to write an e-mail
+
+\paragraph{Shot 2}
+A compose form shows up on K-9 Mail and users writes the e-mail. She wants to switch to another device, so she runs Mailspring on a Mac device.
+
+\paragraph{Shot 3}
+Mailspring which has the common \textit{sending-email} Application State Model with K-9 Mail, joins the network. When Mailspring joins, K-9 Mail shows a notification to the user. She clicks on run-time state migration button.
+
+\paragraph{Shot 4}
+K-9 Mail display migration options which \textit{Set State} is for push method and \textit{Get State} is for pull method. The user clicks on \textit{Set State} as she wants to migrate from K-9 Mail to Mailspring.
+
+\paragraph{Shot 5}
+The \textit{Device List Modal} shows up on K-9 Mail and user choose the target application which is \textit{MailSpring Mac} and clicks on \textit{MIGRATE} button.
+
+\paragraph{Shot 6}
+The compose form on K-9 Mail gets closed and a compose window appears on Mailspring with the same e-mail that was in the K-9 Mail. The user again wants to migrate the run-time state. She clicks on compose e-mail button on K-9 Mail.
+
+\paragraph{Shot 7}
+User changes the e-mail on Mailspring and this time as she wants to migrate from Mailspring to K-9 Mail, clicks on \textit{Get State} .
+
+\paragraph{Shot 8}
+The \textit{Device List Modal} shows up on K-9 Mail and user choose the source application which is \textit{MailSpring Mac} and clicks on \textit{MIGRATE} button.
+
+\paragraph{Shot 9}
+The compose window on Mailspring gets closed and a compose form appears on K-9 Mail with the same e-mail that user have changed in Mailspring.
+
+\newpage
+\FloatBarrier
+\begin{sidewaysfigure}
+
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{../figures/migration.png}
+    \centering
+    \caption{Storyboard of run-time state migration}
+    \label{fig:storyboard}
+\end{figure}
+\end{sidewaysfigure}
+
+\FloatBarrier
